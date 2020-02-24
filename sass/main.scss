@@ -83,6 +83,9 @@ pre {
   max-width: 100%;
   padding: 0.6rem 0.5rem;
   border: 0.1rem solid #535023ed;
+  @media (min-width: 1024px) {
+    margin-left: 1rem;
+  }
 }
 
 figure {
