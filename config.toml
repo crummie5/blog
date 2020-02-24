@@ -1,0 +1,22 @@
+base_url = "https://www.crummie5.club"
+
+title = "Crummie5: A researching blog"
+
+description = "Just a crummy blog. Talking about Active Directory, Windows, Linux, Web, General Hacking and, of course, Research."
+
+default_language = "en"
+
+compile_sass = true
+
+highlight_code = true
+
+highlight_theme = "charcoal"
+
+build_search_index = true
+
+generate_rss = true
+
+taxonomies = [
+    {name = "tags"},
+    {name = "categories"}
+]

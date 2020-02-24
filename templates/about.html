@@ -1,0 +1,124 @@
+{% extends "index.html" %}
+
+{% block css_import %}
+<link rel="stylesheet" href="{{ get_url(path="main.css") | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="about.css") | safe }}">
+{% endblock css_import %}
+
+{% block meta_tags %}
+<meta property="og:type" content="web">
+<meta property="og:url" content="{{ config.base_url | safe }}/about">
+<meta property="og:title" content="About Us">
+<meta property="og:description" content="Want to know more about our members?">
+{% endblock meta_tags %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">
+        About Us
+    </h1>
+    <div class="content">
+        <ul>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/arcocap4z.svg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Arcocap4z</b>
+                    <br>
+                    > Github: <a href="https://github.com/arcocap4z">@arcocap4z</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/arcocap4z">@arcocap4z</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/rata.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">ATTL4S</b>
+                    <br>
+                    > Github: <a href="https://github.com/attl4s">@attl4s</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/danilj94">@danilj94</a>
+                    <br>
+                    > Youtube: <a href="https://www.youtube.com/channel/UCWzVT126IDqZHhuygkfvPaQ">ATTL4S</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/cynops.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Cynops</b>
+                    <br>
+                    > Github: <a href="https://github.com/cynops">@cynops</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/cyn0ps">@cyn0ps</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/jarilaos.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Jaяi</b>
+                    <br>
+                    > Github: <a href="https://github.com/jarilaos">@jarilaos</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/_Laox">@_Laox</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/mandyonze.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Mandyonze</b>
+                    <br>
+                    > Github: <a href="https://github.com/Mandyonze">@Mandyonze</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/Mandyonze">@mandyonze</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/charlieb.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Charlieb</b>
+                    <br>
+                    > Github: <a href="https://github.com/charliebwup">@charliebwup</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/CharliebWup">@CharliebWup</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/saim1z.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">Saim1z</b>
+                    <br>
+                    > Github: <a href="https://github.com/salu90">@salu90</a>
+                    <br>
+                    > Twitter: <a href="https://twitter.com/saim1z">@saim1z</a>
+                </div>
+            </li>
+            <li>
+                <div class="image">
+                    <img src="{{ get_url(path="about/elephantse4l.jpg") | safe }}" />
+                </div>
+                <div class="description">
+                    <b class="name">ElephantSeal</b>
+                    <br>
+                    > Github: <a href="https://github.com/ElephantSe4l">@ElephantSe4l</a>
+                </div>
+            </li>
+        </ul>
+        <div class="dev">
+            <p>Having no money to hire a front-end developer, we had to force ElephantSeal to carry out the task. Unfortunately, this webpage was the result. Any improvement/suggestion will be appreciated. </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

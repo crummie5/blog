@@ -1,0 +1,114 @@
+.post,
+.posts_container {
+  word-wrap: break-word;
+  margin: 2.5rem auto 3rem auto;
+  @media (max-width: 1023px) {
+    width: 90vw;
+    line-height: 160%; 
+  }
+  @media (min-width: 1024px) {
+    width: 70vw;
+    line-height: 150%; 
+  }
+}
+
+.posts_container {
+  .recent-posts {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #5e5e4e;
+    margin: 2rem 0;
+    color: #c6c2bb;
+  }
+}
+
+.post {
+  &-title {
+    font-size: 1.85rem;
+    color: #caa427;
+  }
+  &-data {
+    font-size: 0.9rem;
+    color: #9f9f96;
+    width: 100%;
+    padding-bottom: 1.2rem;
+    &-tag {
+      font-weight: bold;
+      color: #9f9f96;
+    }
+  }
+
+  .authors {
+    margin-right: 1rem;
+  }
+
+  &-content {
+    font-size: 1rem;
+    h1 {
+      font-size: 1.4rem;
+    }
+    h2 {
+      font-size: 1.3rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+    }
+    h4,
+    h5,
+    h6 {
+      font-size: 1.2rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      display: inline-block;
+      border-bottom: 0.15rem solid #f2c42fba;
+      margin: 1.5vh 0 1vh 0;
+      color: #d5d2c6;
+      padding: 0 12px 0 0;
+      &:hover {
+        & > a > svg {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .post-summary :not(#zola-continue-reading),
+  .post-content :not(#zola-continue-reading) {
+    a {
+      border-bottom: 0.1rem solid #e19e00d1;
+    }
+  }
+}
+
+.posts_container .post {
+  &-title:before {
+    content: ">";
+    padding-right: 8px;
+    color: #8a6100;
+  }
+
+  &-summary .readmore {
+    border-bottom: 1px solid;
+    padding: 4px 12px 2px 0;
+    margin: 1vh 0 0 0;
+    display: inline-block;
+  }
+}
+
+a:not(.zola-anchor) > svg {
+  fill: #d7b221;
+}
+
+.zola-anchor {
+  border: 0 !important;
+  svg {
+    display: none;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}

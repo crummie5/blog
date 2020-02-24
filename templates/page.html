@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block css_import %}
+<link rel="stylesheet" href="{{ get_url(path="main.css") | safe }}">
+{% endblock css_import %}
+
+{% block meta_tags %}
+<title>Crummie5 | {{ page.title }}</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ page.permalink | safe }}">
+<meta property="og:image" content="{{ page.permalink | safe }}{{ page.extra.preview_image }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.extra.preview_summary }}">
+<meta name="description" content="{{ page.extra.preview_summary }}">
+{% endblock meta_tags %}
+
+{% block content %}
+<div class="post">
+    <h1 class="post-title">
+        {{ page.title }}
+    </h1>
+    <div class="post-data">
+        {{ blog_macros::get_post_data(page=page) }}
+    </div>
+    <div class="post-content">
+        {{ page.content | safe }}
+    </div>
+</div>
+{% endblock content %}

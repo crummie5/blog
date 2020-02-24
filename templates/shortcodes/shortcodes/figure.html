@@ -1,0 +1,8 @@
+<figure>
+  {% if caption %}
+  <img src="{{ page.permalink | safe }}/{{ name }}" alt="{{ caption }}" />
+  <figcaption>{{ caption }}</figcaption>
+  {% else %}
+  <img src="{{ page.permalink | safe }}/{{ name }}" />
+  {% endif %}
+</figure>

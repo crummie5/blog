@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+
+{% block css_import %}
+<link rel="stylesheet" href="{{ get_url(path="main.css") | safe }}">
+<link rel="stylesheet" href="{{ get_url(path="list.css") | safe }}">
+{% endblock css_import %}
+
+{% block meta_tags %}
+<meta property="og:type" content="web">
+<meta property="og:url" content="{{ config.base_url | safe }}/tags/">
+<meta property="og:title" content="{{ config.title }}">
+<meta property="og:description" content="Tag list">
+{% endblock meta_tags %}
+
+{% block content %}
+<div class="list-container">
+  <h1 class="list-title">tag list</h1>
+
+  <ul class="list">
+    {% for term in terms %}
+    <div class="list-item">
+      <svg class="tag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="24" cy="8" r="2" />
+        <path d="M2 18 L18 2 30 2 30 14 14 30 Z" />
+      </svg>
+      <a href="{{ term.permalink | safe }}">
+        #{{ term.name }}
+      </a>
+      <span>({{ term.pages | length }} post{{ term.pages | length | pluralize }})</span>
+    </div>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

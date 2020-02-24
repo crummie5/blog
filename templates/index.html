@@ -1,0 +1,100 @@
+{% import "blog_macros.html" as blog_macros %}
+
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="{{ get_url(path="favicon.ico") | safe}}" />
+
+  {%- if config.generate_rss %}
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml") | safe }}">
+  {% endif -%}
+
+  {% block css_import %}
+  <link rel="stylesheet" href="{{ get_url(path="main.css") | safe }}">
+  {% endblock css_import %}
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+
+  <script src="{{ get_url(path="elasticlunr.min.js") | safe }}"></script>
+  <script src="{{ get_url(path="search_index.en.js") | safe }}"></script>
+  <script src="{{ get_url(path="search.js") | safe }}"></script>
+  <script>'https:' !== window.location.protocol && (window.location.protocol = 'https')</script>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta name="robots" content="index, nofollow">
+  <meta name="language" content="English">
+
+  {% block meta_tags %}
+  <title>{{ config.title }}</title>
+  <meta property="og:type" content="web">
+  <meta property="og:url" content="{{ config.base_url | safe }}/">
+  <meta property="og:image" content="{{ get_url(path="foca.jpg") | safe }}">
+  <meta property="og:title" content="{{ config.title }}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta name="description" content="{{ config.description }}">
+  {% endblock meta_tags %}
+
+</head>
+
+
+<body>
+  <div class="header_container">
+    <header>
+      <img src="{{ get_url(path="logo.png") | safe }}" class="logo-img" alt="just a foca">
+      <h1 class="logo-title"><a href="{{ config.base_url | safe }}">Crummie5</a></h1>
+    </header>
+     <div class="menu-container">
+      <ul class="menu">
+        <li class="menu-element"><a href="{{ config.base_url | safe }}">home</a></li>
+        <li class="menu-element"><a href="{{ config.base_url | safe }}/about">about us</a></li>
+        <li class="menu-element dropdown-container">
+          <label for="tags">tags</label>
+          <input id="tags" class="tags-toggle" type="checkbox" style="display:none" value="0">
+          <div class="dropdown">
+            <ul class="submenu">
+              <li class="submenu-element">
+                <a href="{{ config.base_url | safe }}/tags/linux">Linux</a>
+              </li>
+              <li class="submenu-element">
+                <a href="{{ config.base_url | safe }}/tags/malware">Malware</a>
+              </li>
+              <li class="submenu-element">
+                <a href="{{ config.base_url | safe }}/tags/exploiting">Exploiting</a>
+              </li> 
+              <li class="submenu-element">
+                <a href="{{ config.base_url | safe }}/tags">View All</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <div class="search_bar_container menu-element">
+          <input type="text" placeholder="Search..." class="search_bar">
+          <div class="search-results">
+            <div class="search-results__items"></div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="search_bar_container mobile">
+      <input type="text" placeholder="Search..." class="search_bar">
+      <div class="search-results">
+        <div class="search-results__items mobile"></div>
+      </div>
+    </div>
+  </div>
+
+  {% block content %}
+  <div class="posts_container">
+    <h1 class="recent-posts">Recent Posts</h1>
+    {% for page in paginator.pages %}
+    {{ blog_macros::list_post(page=page) }}
+    {% endfor %}
+  </div>
+  {% endblock content %}
+
+</body>
+
+</html>

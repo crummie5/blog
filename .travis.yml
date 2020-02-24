@@ -1,0 +1,22 @@
+dist: bionic
+language: minimal
+
+before_script:
+  - nvm install node
+  - npm install
+  - npm install gulp-cli -g
+  - curl -s -L https://github.com/getzola/zola/releases/download/v0.9.0/zola-v0.9.0-x86_64-unknown-linux-gnu.tar.gz | sudo tar xvzf - -C /usr/local/bin
+
+script:
+  - zola build
+  - rm public/header.css
+  - gulp css
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  token: $GH_TOKEN
+  keep_history: true
+  local_dir: public/
+  on:
+    branch: master
