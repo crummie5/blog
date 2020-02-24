@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://www.crummie5.club/sitemap.xml

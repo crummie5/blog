@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Crummie5: A researching blog</title>
+        <link>https://www.crummie5.club</link>
+        <description>Just a crummy blog. Talking about Active Directory, Windows, Linux, Web, General Hacking and, of course, Research.</description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://www.crummie5.club/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Sun, 19 Jan 2020 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>Pwning A Pwned Citrix</title>
+                <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
+                <link>https://www.crummie5.club/pwning-a-pwned-citrix/</link>
+                <guid>https://www.crummie5.club/pwning-a-pwned-citrix/</guid>
+                <description>&lt;p&gt;&lt;strong&gt;Hello H4x0rs!&lt;&#x2F;strong&gt;
+At this time you surely have heard about the new and dangerous Citrix vulnerability labeled as CVE-2019-19781, consisting in a Directory Traversal plus Remote Command Execution attack vector. During a real security engagement I had to face a peculiar situation related to this and I wanted to share it with you, hope you find it useful.&lt;&#x2F;p&gt;
+&lt;p&gt;Just as a quick recap, CVE-2019-19781, also known as “Shitrix” takes advantage of how the Citrix Gateway appliance handles templates. You can create a template by making a call to the &lt;code&gt;&#x2F;vpn&#x2F;..&#x2F;vpns&#x2F;portal&#x2F;scripts&#x2F;newbm.pl&lt;&#x2F;code&gt; endpoint and inserting some Perl template into an XML file. This one contains the payload, but it is not executed until a request is made to the &lt;code&gt;&#x2F;vpn&#x2F;..&#x2F;vpns&#x2F;portal&#x2F;&amp;lt;xml_name&amp;gt;.xml&lt;&#x2F;code&gt; endpoint, which is the action that triggers the command execution.&lt;&#x2F;p&gt;
+&lt;p&gt;There are a few exploits available to the public that implements that process so that you only have to specify the target and press enter to get a shell. However none of these worked for me for a good reason that we are going to explore in the following lines.&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+    </channel>
+</rss>
