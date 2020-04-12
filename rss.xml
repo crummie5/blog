@@ -7,7 +7,32 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://www.crummie5.club/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Sun, 19 Jan 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Sun, 12 Apr 2020 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>Kerberos Unconstrained Delegation: Compromising a computer object by its TGT</title>
+                <pubDate>Sun, 12 Apr 2020 00:00:00 +0000</pubDate>
+                <link>https://www.crummie5.club/kerberos-unconstrained-tgt/</link>
+                <guid>https://www.crummie5.club/kerberos-unconstrained-tgt/</guid>
+                <description>&lt;p&gt;Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone. 
+&lt;strong&gt;NOTE:&lt;&#x2F;strong&gt; Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.&lt;&#x2F;p&gt;
+&lt;p&gt;If you are not familiar with Kerberos Delegation, you can find some links in the References section as I don’t feel necessary to explain what is already perfectly explained by others.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;
+    &lt;svg id=&quot;i-link&quot; xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 32 32&quot; width=&quot;32&quot; height=&quot;32&quot; fill=&quot;none&quot;
+        stroke=&quot;currentcolor&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot;&gt;
+        &lt;path
+            d=&quot;M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15&quot;&gt;
+        &lt;&#x2F;path&gt;
+    &lt;&#x2F;svg&gt;
+&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Ok let’s asume we&#x27;ve compromised &lt;code&gt;Web01.capsule.corp&lt;&#x2F;code&gt;, a server with Kerberos Unconstrained Delegation enabled:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;https:&#x2F;&#x2F;www.crummie5.club&#x2F;kerberos-unconstrained-tgt&#x2F;&#x2F;fig1.png&quot; alt=&quot;Web01 configured with Unconstrained Delegation.&quot; &#x2F;&gt;
+  &lt;figcaption&gt;Web01 configured with Unconstrained Delegation.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;
+</description>
+            </item>
         
             <item>
                 <title>Pwning A Pwned Citrix</title>

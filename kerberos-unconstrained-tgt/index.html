@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="https://www.crummie5.club/favicon.ico" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.crummie5.club/rss.xml">
+  
+<link rel="stylesheet" href="https://www.crummie5.club/main.css">
+
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+
+  <script src="https://www.crummie5.club/elasticlunr.min.js"></script>
+  <script src="https://www.crummie5.club/search_index.en.js"></script>
+  <script src="https://www.crummie5.club/search.js"></script>
+  <script>'https:' !== window.location.protocol && (window.location.protocol = 'https')</script>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta property="og:site_name" content="Crummie5: A researching blog">
+  <meta name="robots" content="index, nofollow">
+  <meta name="language" content="English">
+
+  
+<title>Crummie5 | Kerberos Unconstrained Delegation: Compromising a computer object by its TGT</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.crummie5.club/kerberos-unconstrained-tgt/">
+<meta property="og:image" content="https://www.crummie5.club/kerberos-unconstrained-tgt/fig6.png">
+<meta property="og:title" content="Kerberos Unconstrained Delegation: Compromising a computer object by its TGT">
+<meta property="og:description" content="In this post we will see how to abuse Kerberos Unconstrained Delegation to compromise systems by impersonating their associated computer accounts.">
+<meta name="description" content="In this post we will see how to abuse Kerberos Unconstrained Delegation to compromise systems by impersonating their associated computer accounts.">
+
+
+</head>
+
+
+<body>
+  <div class="header_container">
+    <header>
+      <img src="https://www.crummie5.club/logo.png" class="logo-img" alt="just a foca">
+      <h1 class="logo-title"><a href="https://www.crummie5.club">Crummie5</a></h1>
+    </header>
+     <div class="menu-container">
+      <ul class="menu">
+        <li class="menu-element"><a href="https://www.crummie5.club">home</a></li>
+        <li class="menu-element"><a href="https://www.crummie5.club/about">about us</a></li>
+        <li class="menu-element dropdown-container">
+          <label for="tags">tags</label>
+          <input id="tags" class="tags-toggle" type="checkbox" style="display:none" value="0">
+          <div class="dropdown">
+            <ul class="submenu">
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/linux">Linux</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/windows">Windows</a>
+              </li> 
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/malware">Malware</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags">View All</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <div class="search_bar_container menu-element">
+          <input type="text" placeholder="Search..." class="search_bar">
+          <div class="search-results">
+            <div class="search-results__items"></div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="search_bar_container mobile">
+      <input type="text" placeholder="Search..." class="search_bar">
+      <div class="search-results">
+        <div class="search-results__items mobile"></div>
+      </div>
+    </div>
+  </div>
+
+  
+<div class="post">
+    <h1 class="post-title">
+        Kerberos Unconstrained Delegation: Compromising a computer object by its TGT
+    </h1>
+    <div class="post-data">
+        
+
+<b>ATTL4S</b> on 2020-04-12 &nbsp;·&nbsp;
+
+<svg viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round"
+    stroke-linejoin="round" stroke-width="6.25%" preserveAspectRatio="xMaxYMax">
+    <circle cx="16" cy="16" r="14" />
+    <path d="M16 8 L16 16 20 20" />
+</svg>
+6 minutes read
+<br>
+
+<svg class="tag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"
+    stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <circle cx="24" cy="8" r="2" />
+    <path d="M2 18 L18 2 30 2 30 14 14 30 Z" />
+</svg>
+
+
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/windows/">#Windows&nbsp;</a>
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/active-directory/">#Active Directory&nbsp;</a>
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/privilege-escalation/">#Privilege Escalation&nbsp;</a>
+
+
+
+
+
+·&nbsp;
+
+
+<a href="https://twitter.com/intent/tweet?text=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+    <svg id="i-twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"
+        style="width:1.2rem;height:1.2rem">
+        <path stroke-width="0" fill="currentColor"
+            d="M60 16 L54 17 L58 12 L51 14 C42 4 28 15 32 24 C16 24 8 12 8 12 C8 12 2 21 12 28 L6 26 C6 32 10 36 17 38 L10 38 C14 46 21 46 21 46 C21 46 15 51 4 51 C37 67 57 37 54 21 Z" />
+    </svg>
+</a>
+
+<a
+    href="https://www.linkedin.com/shareArticle?mini=true&title=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+    <svg id="i-linkedin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+        style="width:1.3rem;height:1.3rem">
+        <rect height="11" width="4" x="3" y="9"></rect>
+        <circle cx="5" cy="5" r="2"></circle>
+        <path
+            d="M16.5,8.25A4.47251,4.47251,0,0,0,13,9.95343V9H9V20h4V13a2,2,0,0,1,4,0v7h4V12.75A4.5,4.5,0,0,0,16.5,8.25Z">
+        </path>
+    </svg>
+</a>
+
+<a href="https://telegram.me/share/?text=%0AKerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1000"
+        width="32" height="32" style="width:1.1rem;height:1.1rem">
+        <path
+            d="M500,10C229.4,10,10,229.4,10,500s219.4,490,490,490s490-219.4,490-490S770.6,10,500,10z M740.8,345.9l-80.4,378.8c-5.5,27-21.8,33.3-44.4,20.9L493.5,655l-58.8,57.2c-6.9,6.7-12.3,12.3-24.5,12.3c-15.9,0-13.2-5.9-18.6-21.1l-41.7-137l-121.2-37.7c-26.2-8-26.4-26,5.9-38.9l472-182.2C728.2,297.9,749,312.8,740.8,345.9L740.8,345.9z" />
+    </svg>
+</a>
+
+
+    </div>
+    <div class="post-content">
+        <p>Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone. 
+<strong>NOTE:</strong> Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.</p>
+<p>If you are not familiar with Kerberos Delegation, you can find some links in the References section as I don’t feel necessary to explain what is already perfectly explained by others.</p>
+<h2 id="introduction">Introduction<a class="zola-anchor" href="#introduction" aria-label="Anchor link for: introduction">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>Ok let’s asume we've compromised <code>Web01.capsule.corp</code>, a server with Kerberos Unconstrained Delegation enabled:</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig1.png" alt="Web01 configured with Unconstrained Delegation." />
+  <figcaption>Web01 configured with Unconstrained Delegation.</figcaption>
+</figure>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>At this moment we should know that if any principal - user, system, service account - connects to any of the services offered by our compromised system, it will drop a copy of its TGT unless it’s configured as a protected principal (protected users / account is sensitive). 
+For example, let’s say Bulma lists the C$ share of our compromised machine. Once she does that, we will be able to dump her TGT from the resulting network session.</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig2.png" alt="Bulma listing C$ share of Web01." />
+  <figcaption>Bulma listing C$ share of Web01.</figcaption>
+</figure>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig3.png" alt="Bulma&#x27;s TGT in memory." />
+  <figcaption>Bulma&#x27;s TGT in memory.</figcaption>
+</figure>
+<p>As seen in <a href="https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/">Not A Security Boundary: Breaking Forest Trusts</a>, we also know we can use certain remote procedure calls to make arbitrary principals to connect to our Unconstrained system. In that post we saw how RPC’s MS-RPRN protocol was leveraged to obtain a TGT from an external Domain Controller. Although Microsoft fixed the issue across Forest trusts, you can still potentially abuse it within your Forest. 
+If the previous technique succeeds, you can obtain a Domain Controller TGT. Since these systems happen to be replicating data to each other, becoming one of them allows you to do it aswell. This essentially translates to: using a Domain Controller’s TGT allows you to DCSync any credential you desire from the targeted domain.
+Here is an example with <code>DC02$</code> from the <code>BADABING.SOPRANO.SL</code> domain (ws04.badabing.soprano.sl is the Unconstrained system):</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig4.png" alt="Dumping DC02&#x27;s TGT." />
+  <figcaption>Dumping DC02&#x27;s TGT.</figcaption>
+</figure>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig5.png" alt="Obtaining Corrado&#x27;s hash through DCSync." />
+  <figcaption>Obtaining Corrado&#x27;s hash through DCSync.</figcaption>
+</figure>
+<p>However, in some scenarios we will notice the spooler service is disabled on Domain Controllers, or there are measures so you cannot force them to connect to arbitrary systems using the previous approach. This is the case for my other domain (<code>CAPSULE.CORP</code>).
+How could I use this approach with non-DC Systems to compromiso <code>CAPSULE.CORP</code>? </p>
+<h2 id="compromising-a-computer-object-by-its-tgt">Compromising a Computer Object by its TGT<a class="zola-anchor" href="#compromising-a-computer-object-by-its-tgt" aria-label="Anchor link for: compromising-a-computer-object-by-its-tgt">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>The first thing we should be aware of is that computer accounts don’t have logon permissions on any system by default. This means that if you manage to obtain a TGT for the <code>WS04$</code> computer account, you should not have any explicit access to the system represented by that same account (<code>Web01.capsule.corp</code> in this case). 
+However, as we did with the Domain Controller TGT, we can take advantage of any permissions the computer account might have. There are two “general” straight forward scenarios:</p>
+<ul>
+<li>By default, computer accounts have privileges to configure Resource-Based Constrained Delegation (RBCD) for themselves. </li>
+<li>Computers with LAPS installed need privileges to rotate the local administrator password, which is stored in one attribute of the computer object.</li>
+</ul>
+<p>Sometimes we also see weird situations where a computer account might be a member of the Domain Admins group or happen to have random high privileges (good old Exchange).
+In all those situations, we can try this approach and it will likely result in a full domain compromise sooner or later.</p>
+<h3 id="rbcd">RBCD<a class="zola-anchor" href="#rbcd" aria-label="Anchor link for: rbcd">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h3>
+<p>Let’s say we want to compromise WS04.capsule.corp as it is the CEO machine. First we would make that system connect to our Unconstrained <code>Web01.capsule.corp</code> and drop its TGT. 
+In the image below we see our desired ticket (note these network logons do not last forever, so be fast dumping the ticket. Otherwhise Rubeus has a “monitor” function to catch them easily with filters): </p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig6.png" alt="WS04$&#x27;s TGT in memory." />
+  <figcaption>WS04$&#x27;s TGT in memory.</figcaption>
+</figure>
+<p>Then we would Pass the Ticket to impersonate <code>WS04$</code> and configure RBCD. As we already compromised Web01, we can use it as the trusted principal.</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig7.png" alt="Configuring RBCD with Web01 as the trusted principal." />
+  <figcaption>Configuring RBCD with Web01 as the trusted principal.</figcaption>
+</figure>
+<p>Finally we just invoke <code>S4U2Self</code> and <code>S4U2Proxy</code> to obtain valid service tickets as any user and compromise <code>WS04</code>.</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig8.png" alt="S4U2Self and S4U2Proxy as the trusted principal." />
+  <figcaption>S4U2Self and S4U2Proxy as the trusted principal.</figcaption>
+</figure>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig9.png" alt="CIFS service ticket impersonating Administrator." />
+  <figcaption>CIFS service ticket impersonating Administrator.</figcaption>
+</figure>
+<h3 id="laps">LAPS<a class="zola-anchor" href="#laps" aria-label="Anchor link for: laps">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h3>
+<p>With LAPS is pretty much the same. Although we cannot see the password by default, we can modify it to arbitrary values. This can be seen in the images below.</p>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig10.png" alt="WS04&#x27;s LAPS password." />
+  <figcaption>WS04&#x27;s LAPS password.</figcaption>
+</figure>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig11.png" alt="Modifying WS04&#x27;s LAPS password." />
+  <figcaption>Modifying WS04&#x27;s LAPS password.</figcaption>
+</figure>
+<figure>
+  <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig12.png" alt="Patatas123 4ever." />
+  <figcaption>Patatas123 4ever.</figcaption>
+</figure>
+<h2 id="conclusions-and-mitigations">Conclusions and Mitigations<a class="zola-anchor" href="#conclusions-and-mitigations" aria-label="Anchor link for: conclusions-and-mitigations">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>Here we have shown two interesting examples on how to compromise a system through the impersonation of its associated computer account. However, as it’s been said, there could be tons of possibilities in highly populated domains where a lot of custom groups and relatioships exist.</p>
+<ul>
+<li>Watchout the usage of Kerberos Unconstrained Delegation. It should not be necessary to use this delegation as there are really good alternatives: Constrained Delegation and RCBD.</li>
+<li>As a defender, always review the privileges of your principals. Not only user accounts, <strong>EVERY</strong> principal.</li>
+<li>A really good documentation is provided by Microsoft about securing privileged access and all it involves <a href="https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material">HERE</a> </li>
+<li>Also, review default configurations in your domain. We probably don’t want that every system can configure RBCD for itself among other risky default settings.</li>
+</ul>
+<p>Hope you enjoyed this post!
+ATTL4S</p>
+<h2 id="references">References<a class="zola-anchor" href="#references" aria-label="Anchor link for: references">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<ul>
+<li>
+<p><strong>Active Directory Security Risk #101: Kerberos Unconstrained Delegation (or How Compromise of a Single Server Can Compromise the Domain):</strong> 
+<a href="https://adsecurity.org/?p=1667">https://adsecurity.org/?p=1667</a></p>
+</li>
+<li>
+<p><strong>Not A Security Boundary: Breaking Forest Trusts:</strong>
+<a href="https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/">https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/</a></p>
+</li>
+<li>
+<p><strong>Wagging the Dog: Abusing Resource-Based Constrained Delegation to Attack Active Directory:</strong> 
+<a href="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html">https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html</a></p>
+</li>
+<li>
+<p><strong>(Self advertising :D) Kerberos Resource-Based Constrained Delegation: When an Image Change Leads to a Privilege Escalation:</strong> 
+<a href="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2019/august/kerberos-resource-based-constrained-delegation-when-an-image-change-leads-to-a-privilege-escalation/">https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2019/august/kerberos-resource-based-constrained-delegation-when-an-image-change-leads-to-a-privilege-escalation/</a></p>
+</li>
+</ul>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
