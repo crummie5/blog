@@ -186,8 +186,8 @@ For example, let’s say Bulma lists the C$ share of our compromised machine. On
   <figcaption>Bulma&#x27;s TGT in memory.</figcaption>
 </figure>
 <p>As seen in <a href="https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/">Not A Security Boundary: Breaking Forest Trusts</a>, we also know we can use certain remote procedure calls to make arbitrary principals to connect to our Unconstrained system. In that post we saw how RPC’s MS-RPRN protocol was leveraged to obtain a TGT from an external Domain Controller. Although Microsoft fixed the issue across Forest trusts, you can still potentially abuse it within your Forest. 
-If the previous technique succeeds, you can obtain a Domain Controller TGT. Since these systems happen to be replicating data to each other, becoming one of them allows you to do it aswell. This essentially translates to: using a Domain Controller’s TGT allows you to DCSync any credential you desire from the targeted domain.
-Here is an example with <code>DC02$</code> from the <code>BADABING.SOPRANO.SL</code> domain (ws04.badabing.soprano.sl is the Unconstrained system):</p>
+If the previous technique succeeds, you can obtain a Domain Controller TGT. Since these systems happen to be replicating data to each other, becoming one of them allows you to do it aswell. This essentially translates to: using a Domain Controller’s TGT allows you to DCSync any credential you desire from the targeted domain.</p>
+<p>Here is an example with <code>DC02$</code> from the <code>BADABING.SOPRANO.SL</code> domain (ws04.badabing.soprano.sl is the Unconstrained system):</p>
 <figure>
   <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig4.png" alt="Dumping DC02&#x27;s TGT." />
   <figcaption>Dumping DC02&#x27;s TGT.</figcaption>
