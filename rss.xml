@@ -10,12 +10,12 @@
         <lastBuildDate>Sun, 12 Apr 2020 00:00:00 +0000</lastBuildDate>
         
             <item>
-                <title>Kerberos Unconstrained Delegation: Compromising a computer object by its TGT</title>
+                <title>Kerberos Unconstrained Delegation: Compromising a Computer Object by its TGT</title>
                 <pubDate>Sun, 12 Apr 2020 00:00:00 +0000</pubDate>
                 <link>https://www.crummie5.club/kerberos-unconstrained-tgt/</link>
                 <guid>https://www.crummie5.club/kerberos-unconstrained-tgt/</guid>
-                <description>&lt;p&gt;Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone. 
-&lt;strong&gt;NOTE:&lt;&#x2F;strong&gt; Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.&lt;&#x2F;p&gt;
+                <description>&lt;p&gt;Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;&#x2F;strong&gt; Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.&lt;&#x2F;p&gt;
 &lt;p&gt;If you are not familiar with Kerberos Delegation, you can find some links in the References section as I don’t feel necessary to explain what is already perfectly explained by others.&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot;&gt;
     &lt;svg id=&quot;i-link&quot; xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 32 32&quot; width=&quot;32&quot; height=&quot;32&quot; fill=&quot;none&quot;

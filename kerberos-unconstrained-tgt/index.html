@@ -22,12 +22,12 @@
   <meta name="language" content="English">
 
   
-<title>Crummie5 | Kerberos Unconstrained Delegation: Compromising a computer object by its TGT</title>
+<title>Crummie5 | Kerberos Unconstrained Delegation: Compromising a Computer Object by its TGT</title>
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.crummie5.club/kerberos-unconstrained-tgt/">
 <meta property="og:image" content="https://www.crummie5.club/kerberos-unconstrained-tgt/fig6.png">
-<meta property="og:title" content="Kerberos Unconstrained Delegation: Compromising a computer object by its TGT">
+<meta property="og:title" content="Kerberos Unconstrained Delegation: Compromising a Computer Object by its TGT">
 <meta property="og:description" content="In this post we will see how to abuse Kerberos Unconstrained Delegation to compromise systems by impersonating their associated computer accounts.">
 <meta name="description" content="In this post we will see how to abuse Kerberos Unconstrained Delegation to compromise systems by impersonating their associated computer accounts.">
 
@@ -84,7 +84,7 @@
   
 <div class="post">
     <h1 class="post-title">
-        Kerberos Unconstrained Delegation: Compromising a computer object by its TGT
+        Kerberos Unconstrained Delegation: Compromising a Computer Object by its TGT
     </h1>
     <div class="post-data">
         
@@ -126,7 +126,7 @@
 ·&nbsp;
 
 
-<a href="https://twitter.com/intent/tweet?text=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+<a href="https://twitter.com/intent/tweet?text=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20Computer%20Object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
     <svg id="i-twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"
         style="width:1.2rem;height:1.2rem">
         <path stroke-width="0" fill="currentColor"
@@ -135,7 +135,7 @@
 </a>
 
 <a
-    href="https://www.linkedin.com/shareArticle?mini=true&title=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+    href="https://www.linkedin.com/shareArticle?mini=true&title=Kerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20Computer%20Object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.%0A&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
     <svg id="i-linkedin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
         style="width:1.3rem;height:1.3rem">
         <rect height="11" width="4" x="3" y="9"></rect>
@@ -146,7 +146,7 @@
     </svg>
 </a>
 
-<a href="https://telegram.me/share/?text=%0AKerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20computer%20object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
+<a href="https://telegram.me/share/?text=%0AKerberos%20Unconstrained%20Delegation%3A%20Compromising%20a%20Computer%20Object%20by%20its%20TGT%3A%20In%20this%20post%20we%20will%20see%20how%20to%20abuse%20Kerberos%20Unconstrained%20Delegation%20to%20compromise%20systems%20by%20impersonating%20their%20associated%20computer%20accounts.&url=https://www.crummie5.club/kerberos-unconstrained-tgt/">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1000"
         width="32" height="32" style="width:1.1rem;height:1.1rem">
         <path
@@ -157,8 +157,8 @@
 
     </div>
     <div class="post-content">
-        <p>Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone. 
-<strong>NOTE:</strong> Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.</p>
+        <p>Everything that involves Kerberos functionality is such a complex subject… since I’ve been abusing these attack chains a lot recently, I thought this post would be helpful to someone.</p>
+<p><strong>NOTE:</strong> Nothing explained here is new at all. If you understand how Delegations work you may be already aware of these vectors. Nonetheless it might not be as straight forward for everyone, hence I’m writing this.</p>
 <p>If you are not familiar with Kerberos Delegation, you can find some links in the References section as I don’t feel necessary to explain what is already perfectly explained by others.</p>
 <h2 id="introduction">Introduction<a class="zola-anchor" href="#introduction" aria-label="Anchor link for: introduction">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
@@ -197,7 +197,7 @@ Here is an example with <code>DC02$</code> from the <code>BADABING.SOPRANO.SL</c
   <figcaption>Obtaining Corrado&#x27;s hash through DCSync.</figcaption>
 </figure>
 <p>However, in some scenarios we will notice the spooler service is disabled on Domain Controllers, or there are measures so you cannot force them to connect to arbitrary systems using the previous approach. This is the case for my other domain (<code>CAPSULE.CORP</code>).
-How could I use this approach with non-DC Systems to compromiso <code>CAPSULE.CORP</code>? </p>
+How could I use this approach with non-DC Systems to compromise <code>CAPSULE.CORP</code>? </p>
 <h2 id="compromising-a-computer-object-by-its-tgt">Compromising a Computer Object by its TGT<a class="zola-anchor" href="#compromising-a-computer-object-by-its-tgt" aria-label="Anchor link for: compromising-a-computer-object-by-its-tgt">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -213,8 +213,7 @@ However, as we did with the Domain Controller TGT, we can take advantage of any 
 <li>By default, computer accounts have privileges to configure Resource-Based Constrained Delegation (RBCD) for themselves. </li>
 <li>Computers with LAPS installed need privileges to rotate the local administrator password, which is stored in one attribute of the computer object.</li>
 </ul>
-<p>Sometimes we also see weird situations where a computer account might be a member of the Domain Admins group or happen to have random high privileges (good old Exchange).
-In all those situations, we can try this approach and it will likely result in a full domain compromise sooner or later.</p>
+<p>Sometimes we also see weird situations where a computer account might be a member of the Domain Admins group or happen to have random high privileges (good old Exchange). In all those situations, we can try this approach and it will likely result in a full domain compromise sooner or later.</p>
 <h3 id="rbcd">RBCD<a class="zola-anchor" href="#rbcd" aria-label="Anchor link for: rbcd">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -224,13 +223,12 @@ In all those situations, we can try this approach and it will likely result in a
     </svg>
 </a>
 </h3>
-<p>Let’s say we want to compromise WS04.capsule.corp as it is the CEO machine. First we would make that system connect to our Unconstrained <code>Web01.capsule.corp</code> and drop its TGT. 
-In the image below we see our desired ticket (note these network logons do not last forever, so be fast dumping the ticket. Otherwhise Rubeus has a “monitor” function to catch them easily with filters): </p>
+<p>Let’s say we want to compromise <code>WS04.capsule.corp</code> as it is the CEO machine. First we would make that system connect to our Unconstrained <code>Web01.capsule.corp</code> and drop its TGT. In the image below we see our desired ticket (note these network logons do not last forever, so be fast dumping the ticket. Otherwhise Rubeus has a “monitor” function to catch them easily with filters): </p>
 <figure>
   <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig6.png" alt="WS04$&#x27;s TGT in memory." />
   <figcaption>WS04$&#x27;s TGT in memory.</figcaption>
 </figure>
-<p>Then we would Pass the Ticket to impersonate <code>WS04$</code> and configure RBCD. As we already compromised Web01, we can use it as the trusted principal.</p>
+<p>Then we would Pass the Ticket to impersonate <code>WS04$</code> and configure RBCD. As we already compromised <code>Web01$</code>, we can use it as the trusted principal.</p>
 <figure>
   <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig7.png" alt="Configuring RBCD with Web01 as the trusted principal." />
   <figcaption>Configuring RBCD with Web01 as the trusted principal.</figcaption>
@@ -278,8 +276,11 @@ In the image below we see our desired ticket (note these network logons do not l
 <p>Here we have shown two interesting examples on how to compromise a system through the impersonation of its associated computer account. However, as it’s been said, there could be tons of possibilities in highly populated domains where a lot of custom groups and relatioships exist.</p>
 <ul>
 <li>Watchout the usage of Kerberos Unconstrained Delegation. It should not be necessary to use this delegation as there are really good alternatives: Constrained Delegation and RCBD.</li>
-<li>As a defender, always review the privileges of your principals. Not only user accounts, <strong>EVERY</strong> principal.</li>
+<li>As a defender, always review the privileges of your principals. Not only user accounts, <strong>EVERY</strong> principal.
+<ul>
 <li>A really good documentation is provided by Microsoft about securing privileged access and all it involves <a href="https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material">HERE</a> </li>
+</ul>
+</li>
 <li>Also, review default configurations in your domain. We probably don’t want that every system can configure RBCD for itself among other risky default settings.</li>
 </ul>
 <p>Hope you enjoyed this post!
