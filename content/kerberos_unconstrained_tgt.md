@@ -88,7 +88,7 @@ Here we have shown two interesting examples on how to compromise a system throug
 - Also, review default configurations in your domain. We probably don’t want that every system can configure RBCD for itself among other risky default settings.
 
 Hope you enjoyed this post!
-ATTL4S
+~ ATTL4S
 
 
 

@@ -34,17 +34,19 @@
 .list-item {
   padding: 1vh 0 4vh 0;
   border-bottom: 1px solid #5e5e4e;
-  &:before {
-    content: ">";
-    margin-right: 8px;
-    color: #8a6100;
-  }
   a {
     color: #b9b7ae;
   }
   &-title {
+    font-weight: bold;
     font-size: 1.6rem;
     color: #caa427 !important;
+
+    &:before {
+      content: ">";
+      margin-right: 8px;
+      color: #8a6100;
+    }
   }
   &-data {
     line-height: 1.4rem;

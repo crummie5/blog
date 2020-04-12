@@ -7,7 +7,7 @@
     line-height: 160%; 
   }
   @media (min-width: 1024px) {
-    width: 70vw;
+    width: 65vw;
     line-height: 150%; 
   }
 }
@@ -24,7 +24,7 @@
 .post {
   &-title {
     font-size: 1.85rem;
-    color: #caa427;
+    color: #cea313;
     line-height: 155%;
   }
   &-data {
@@ -42,7 +42,7 @@
     margin-right: 1rem;
   }
 
-  &-content {
+  &-content, &-summary {
     font-size: 1rem;
     h1 {
       font-size: 1.4rem;
