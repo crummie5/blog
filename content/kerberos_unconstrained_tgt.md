@@ -34,6 +34,7 @@ For example, let’s say Bulma lists the C$ share of our compromised machine. On
 
 As seen in [Not A Security Boundary: Breaking Forest Trusts](https://www.harmj0y.net/blog/redteaming/not-a-security-boundary-breaking-forest-trusts/), we also know we can use certain remote procedure calls to make arbitrary principals to connect to our Unconstrained system. In that post we saw how RPC’s MS-RPRN protocol was leveraged to obtain a TGT from an external Domain Controller. Although Microsoft fixed the issue across Forest trusts, you can still potentially abuse it within your Forest. 
 If the previous technique succeeds, you can obtain a Domain Controller TGT. Since these systems happen to be replicating data to each other, becoming one of them allows you to do it aswell. This essentially translates to: using a Domain Controller’s TGT allows you to DCSync any credential you desire from the targeted domain.
+
 Here is an example with `DC02$` from the `BADABING.SOPRANO.SL` domain (ws04.badabing.soprano.sl is the Unconstrained system):
 
 {{ figure(name="fig4.png", caption="Dumping DC02's TGT.") }}

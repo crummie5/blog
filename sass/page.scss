@@ -65,11 +65,12 @@
     h4,
     h5,
     h6 {
-      display: inline-block;
+      display: inline;
       border-bottom: 0.15rem solid #f2c42fba;
       margin: 1.5vh 0 1vh 0;
       color: #d5d2c6;
       padding: 0 12px 0 0;
+      line-height: 180%;
       &:hover {
         & > a > svg {
           display: inline-block;
