@@ -17,6 +17,5 @@ build_search_index = true
 generate_rss = true
 
 taxonomies = [
-    {name = "tags"},
-    {name = "categories"}
+    {name = "tags"}
 ]
