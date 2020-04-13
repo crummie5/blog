@@ -252,7 +252,7 @@ However, as we did with the Domain Controller TGT, we can take advantage of any 
 </a>
 </h3>
 <p>With LAPS is pretty much the same. Although we cannot see the password by default, we can modify it to arbitrary values. This can be seen in the images below.</p>
-<p>EDIT: As pointed out by <a href="https://twitter.com/_dirkjan">@dirkjanm</a>, this change is useless as the password is not stored from the LDAP attribute to SAM (it works backwards --&gt; from SAM to LDAP). My bad for being lazy and not confirming the password was working!
+<p><strong>EDIT:</strong> As pointed out by <a href="https://twitter.com/_dirkjan">@_dirkjan</a>, this change is useless as the password is not stored from the LDAP attribute to SAM (it works backwards --&gt; from <em>SAM</em> to <em>LDAP</em>). My bad for being lazy and not confirming the password was working!
 I will let this PoC though as it serves as another example of reaching things, even if it is useless in this case.</p>
 <figure>
   <img src="https://www.crummie5.club/kerberos-unconstrained-tgt//fig10.png" alt="WS04&#x27;s LAPS password." />
