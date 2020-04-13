@@ -74,6 +74,9 @@ Finally we just invoke `S4U2Self` and `S4U2Proxy` to obtain valid service ticket
 
 With LAPS is pretty much the same. Although we cannot see the password by default, we can modify it to arbitrary values. This can be seen in the images below.
 
+EDIT: As pointed out by [@dirkjanm](https://twitter.com/_dirkjan), this change is useless as the password is not stored from the LDAP attribute to SAM (it works backwards --> from SAM to LDAP). My bad for being lazy and not confirming the password was working!
+I will let this PoC though as it serves as another example of reaching things, even if it is useless in this case.
+
 {{ figure(name="fig10.png", caption="WS04's LAPS password.") }}
 {{ figure(name="fig11.png", caption="Modifying WS04's LAPS password.") }}
 {{ figure(name="fig12.png", caption="Patatas123 4ever.") }}
