@@ -85,7 +85,7 @@ I will let this PoC though as it serves as another example of reaching things, e
 ## Conclusions and Mitigations
 
 Here we have shown two interesting examples on how to compromise a system through the impersonation of its associated computer account. However, as it’s been said, there could be tons of possibilities in highly populated domains where a lot of custom groups and relatioships exist.
-- Watchout the usage of Kerberos Unconstrained Delegation. It should not be necessary to use this delegation as there are really good alternatives: Constrained Delegation and RCBD.
+- Watchout the usage of Kerberos Unconstrained Delegation. It should not be necessary to use this delegation as there are really good alternatives: Constrained Delegation and RBCD.
 - As a defender, always review the privileges of your principals. Not only user accounts, **EVERY** principal.
     - A really good documentation is provided by Microsoft about securing privileged access and all it involves [HERE](https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material) 
 - Also, review default configurations in your domain. We probably don’t want that every system can configure RBCD for itself among other risky default settings.
