@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Crummie5: A researching blog</title>
+        <title>Crummie5</title>
         <link>https://www.crummie5.club</link>
-        <description>Just a crummy blog. Talking about Active Directory, Windows, Linux, Web, General Hacking and, of course, Research.</description>
+        <description>Just a crummy blog. Talking about Active Directory, Windows, Linux, Web and General Hacking.</description>
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://www.crummie5.club/rss.xml" rel="self" type="application/rss+xml"/>
