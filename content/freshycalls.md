@@ -50,9 +50,10 @@ call_syscall(h_process, mem_addr, &buf, mem_size, nullptr);
 <!-- more -->
 
 For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.
+
 Fortunatelly - and thanks to evilsocket - we found the following [post](https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/). In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.
 
-Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they can't be the holy grail!)
+Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they couldn't be the holy grail!)
 
 ## First Detection: The Number Extraction
 
@@ -60,8 +61,7 @@ We started reading [this Cyberbit post](https://www.cyberbit.com/blog/endpoint-s
 
 {{ figure(name="fig1.png", caption="Comparative table taken from Cyberbit's blog.") }}
 
-In our implementation we used the first method which apparently - and according to Cyberbit - was not that bad (nice!). But we still wanted to improve it. 
-We looked at the third method: reading the ntdll.dll module already loaded in the process. It seemed the best approach, but there was a warning: "Fails if the functions are hooked by a security product"
+In our implementation we used the first method which apparently - and according to Cyberbit - was not that bad (nice!). But we still wanted to improve it. We looked at the third method: reading the ntdll.dll module already loaded in the process. It seemed the best approach, but there was a warning: "Fails if the functions are hooked by a security product"
 
 Example:
 
@@ -69,7 +69,7 @@ Example:
 
 If we checked `NtReadVirtualMemory` with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.
 
-Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number! If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! 
+Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. **The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number!** If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! 
 
 What's going on here? We are not really sure, but we think the reason might be that as the syscall number is used to calculate the offset towards the real system service, it somehow needs this relationship to work.
 
@@ -84,11 +84,12 @@ Not really. Defenders **MAY** not be able to detect us at runtime, but a little 
 
 ## Second Detection: Manual Syscall Execution
 
-We already have the extraction, yet what about the execution? can this be detected? 
+We already have the extraction, yet what about the execution? Could this be detected? 
 
 At first we didn't think sycall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.
 
 While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls [here](https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187). They were using something I didn't know at that time called InstrumentationCallback. 
+
 After a simple search I found a [repo](https://github.com/ionescu007/HookingNirvana) and a [video](https://www.youtube.com/watch?v=bqU0y4FzvT0) of a talk that Ionescu gave. With this thing - InstrumentationCallback - we can have a callback every time the CPU returns from kernel-mode to user-mode (i.e. when the system service called has already finished). This allowed us to know what the service output was and the return address. 
 
 ScyllaHide's manual syscall detection is based of checking if the return address is within the memory range corresponding to the EXE. If it is, it's spotted as a manual syscall.
@@ -107,16 +108,16 @@ int    0x2e
 ret
 ```
 
-What if we run our syscall in the original stub? We could jump to the `syscall` instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. 
+What if we run our syscall in the original stub? We could jump to the `syscall` instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check... but be aware this doesn't mean it was good.
 
-Yes, we bypass that check. But we also leak which syscall has been executed. So it's up to you and your operational situation.
+Yes, we bypassed that check. But we also leaked which syscall was executed. So it's up to you and your operational situation using this approach or not.
 
 
 ## And finally... Our library
 
 {{ figure(name="fig3.png", caption="PoC of our library.") }}
 
-Everything we've exaplained might be cool for someone, but doing it manually every time... it's not that cool. And that's why we have released this library! 
+Everything we've exaplained might be cool, but the fact of doing these things manually every time... it's not that cool. And that's why we have released Freshycalls!
 
 We tried to make the use of syscalls comfortable and simple without generating too much boilerplate. For this purpose, we have implemented a series of functions for error handling, reading memory, calling module functions... 
 Let's look at some examples of the error handling for instance:
