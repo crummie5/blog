@@ -17,7 +17,32 @@
                 <description>&lt;p&gt;These last months I&#x27;ve been familiarizing myself with Windows syscalls: how they work, their offensive usage and potential detections from the blue side. Although the theory was quite interesting, I had to get my hands on it. &lt;&#x2F;p&gt;
 &lt;p&gt;I started with the basics: static syscalls for my version of Windows. &lt;&#x2F;p&gt;
 &lt;p&gt;As I&#x27;m not a pentester - I&#x27;m a programmer - I found it too uncomfortable to have to define each syscall each time. That&#x27;s why I made a list with all the syscall numbers and a template that mapped each syscall with each number in a global variable. &lt;&#x2F;p&gt;
-</description>
+&lt;p&gt;It was something like this:&lt;&#x2F;p&gt;
+&lt;p&gt;syscall.asm:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b2c2f;&quot;&gt;
+&lt;span style=&quot;color:#6699cc;&quot;&gt;EXTERN syscall_no:DWORD&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;.code&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;call_syscall PROC&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;mov &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f99157;&quot;&gt;r10&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f99157;&quot;&gt;rcx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;mov &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f99157;&quot;&gt;eax&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;syscall_no&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;syscall&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;ret&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;call_syscall ENDP&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;END&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;syscall.cpp:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b2c2f;&quot;&gt;
+&lt;span style=&quot;color:#c594c5;&quot;&gt;extern &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#99c794;&quot;&gt;C&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fac863;&quot;&gt;DWORD&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt; syscall_no &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f99157;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;
+extern &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#99c794;&quot;&gt;C&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c594c5;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;call_syscall&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;(...);&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;[...]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fac863;&quot;&gt;DWORD&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt; syscall_no &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt; syscalls&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;find&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#99c794;&quot;&gt;NtReadVirtualMemory&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;&amp;quot;);&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;call_syscall&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;h_process&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt; mem_addr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;, &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt;buf&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6699cc;&quot;&gt; mem_size&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f99157;&quot;&gt;nullptr&lt;&#x2F;span&gt;&lt;span style=&quot;color:#5fb3b3;&quot;&gt;);&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cccece;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;</description>
             </item>
         
             <item>

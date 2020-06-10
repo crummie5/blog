@@ -156,7 +156,32 @@
         <p>These last months I've been familiarizing myself with Windows syscalls: how they work, their offensive usage and potential detections from the blue side. Although the theory was quite interesting, I had to get my hands on it. </p>
 <p>I started with the basics: static syscalls for my version of Windows. </p>
 <p>As I'm not a pentester - I'm a programmer - I found it too uncomfortable to have to define each syscall each time. That's why I made a list with all the syscall numbers and a template that mapped each syscall with each number in a global variable. </p>
-
+<p>It was something like this:</p>
+<p>syscall.asm:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">EXTERN syscall_no:DWORD</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">.code</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall PROC</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">mov </span><span style="color:#f99157;">r10</span><span style="color:#cccece;">, </span><span style="color:#f99157;">rcx</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">mov </span><span style="color:#f99157;">eax</span><span style="color:#cccece;">, </span><span style="color:#6699cc;">syscall_no</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">syscall</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall ENDP</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">END</span><span style="color:#cccece;">
+</span></pre>
+<p>syscall.cpp:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#c594c5;">extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">C</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#fac863;">DWORD</span><span style="color:#cccece;"> syscall_no </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;</span><span style="color:#c594c5;">
+extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">C</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#c594c5;">void</span><span style="color:#5fb3b3;">* </span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(...);</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#5fb3b3;">[...]</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#fac863;">DWORD</span><span style="color:#cccece;"> syscall_no </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> syscalls</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">find</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">NtReadVirtualMemory</span><span style="color:#5fb3b3;">&quot;);</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">h_process</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_addr</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#6699cc;">buf</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_size</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nullptr</span><span style="color:#5fb3b3;">);</span><span style="color:#cccece;">
+</span></pre>
         <a class="readmore" href="https://www.crummie5.club/freshycalls/">Read more...&nbsp;&raquo;</a>
     </div>
 </div>

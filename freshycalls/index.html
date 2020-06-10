@@ -152,8 +152,6 @@
         <p>These last months I've been familiarizing myself with Windows syscalls: how they work, their offensive usage and potential detections from the blue side. Although the theory was quite interesting, I had to get my hands on it. </p>
 <p>I started with the basics: static syscalls for my version of Windows. </p>
 <p>As I'm not a pentester - I'm a programmer - I found it too uncomfortable to have to define each syscall each time. That's why I made a list with all the syscall numbers and a template that mapped each syscall with each number in a global variable. </p>
-<p id="zola-continue-reading"><a name="continue-reading"></a></p>
-
 <p>It was something like this:</p>
 <p>syscall.asm:</p>
 <pre style="background-color:#2b2c2f;">
@@ -179,7 +177,8 @@ extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c7
 </span><span style="color:#cccece;">
 </span><span style="color:#fac863;">DWORD</span><span style="color:#cccece;"> syscall_no </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> syscalls</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">find</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">NtReadVirtualMemory</span><span style="color:#5fb3b3;">&quot;);</span><span style="color:#cccece;">
 </span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">h_process</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_addr</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#6699cc;">buf</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_size</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nullptr</span><span style="color:#5fb3b3;">);</span><span style="color:#cccece;">
-</span></pre>
+</span></pre><p id="zola-continue-reading"><a name="continue-reading"></a></p>
+
 <p>For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.
 Fortunatelly - and thanks to evilsocket - we found the following <a href="https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/">post</a>. In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.</p>
 <p>Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they can't be the holy grail!)</p>
@@ -204,13 +203,13 @@ We looked at the third method: reading the ntdll.dll module already loaded in th
   <img src="https://www.crummie5.club/freshycalls//fig2.png" alt="Cylance&#x27;s hook in ntdll.dll." />
   <figcaption>Cylance&#x27;s hook in ntdll.dll.</figcaption>
 </figure>
-<p>If we checked NtReadVirtualMemory with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.</p>
+<p>If we checked <code>NtReadVirtualMemory</code> with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.</p>
 <p>Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number! If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! </p>
 <p>What's going on here? We are not really sure, but we think the reason might be that as the syscall number is used to calculate the offset towards the real system service, it somehow needs this relationship to work.</p>
 <ol>
-<li>We don't read ntdll from disk</li>
-<li>We don't map a second ntdll to the process</li>
-<li>We don't read the already loaded ntdll</li>
+<li>We don't read ntdll.dll from disk</li>
+<li>We don't map a second ntdll.dll to the process</li>
+<li>We don't read the already loaded ntdll.dll</li>
 </ol>
 <p>So... do we have superpowers now? </p>
 <p>Not really. Defenders <strong>MAY</strong> not be able to detect us at runtime, but a little of reverse engineering would spot malicious activities. Furthermore, they may not detect the extraction, but what about the execution?</p>
@@ -240,7 +239,7 @@ After a simple search I found a <a href="https://github.com/ionescu007/HookingNi
 </span><span style="color:#c594c5;">int    </span><span style="color:#f99157;">0x2e</span><span style="color:#cccece;">
 </span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
 </span></pre>
-<p>What if we run our syscall in the original stub? We could jump to the syscall instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. </p>
+<p>What if we run our syscall in the original stub? We could jump to the <code>syscall</code> instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. </p>
 <p>Yes, we bypass that check. But we also leak which syscall has been executed. So it's up to you and your operational situation.</p>
 <h2 id="and-finally-our-library">And finally... Our library<a class="zola-anchor" href="#and-finally-our-library" aria-label="Anchor link for: and-finally-our-library">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
