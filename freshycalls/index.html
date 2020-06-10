@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="https://www.crummie5.club/favicon.ico" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.crummie5.club/rss.xml">
+  
+<link rel="stylesheet" href="https://www.crummie5.club/main.css">
+
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+
+  <script src="https://www.crummie5.club/elasticlunr.min.js"></script>
+  <script src="https://www.crummie5.club/search_index.en.js"></script>
+  <script src="https://www.crummie5.club/search.js"></script>
+  <script>'https:' !== window.location.protocol && (window.location.protocol = 'https')</script>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta property="og:site_name" content="Crummie5">
+  <meta name="robots" content="index, nofollow">
+  <meta name="language" content="English">
+
+  
+<title>Crummie5 | FreshyCalls: Syscalls Freshly Squeezed!</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.crummie5.club/freshycalls/">
+<meta property="og:image" content="https://www.crummie5.club/freshycalls/fig1.png">
+<meta property="og:title" content="FreshyCalls: Syscalls Freshly Squeezed!">
+<meta property="og:description" content="FreshyCalls is a library that tries to make the use of syscalls comfortable and simple, without generating too much boilerplate and in modern C++!">
+<meta name="description" content="FreshyCalls is a library that tries to make the use of syscalls comfortable and simple, without generating too much boilerplate and in modern C++!">
+
+
+</head>
+
+
+<body>
+  <div class="header_container">
+    <header>
+      <img src="https://www.crummie5.club/logo.png" class="logo-img" alt="just a foca">
+      <h1 class="logo-title"><a href="https://www.crummie5.club">Crummie5</a></h1>
+    </header>
+     <div class="menu-container">
+      <ul class="menu">
+        <li class="menu-element"><a href="https://www.crummie5.club">home</a></li>
+        <li class="menu-element"><a href="https://www.crummie5.club/about">about us</a></li>
+        <li class="menu-element dropdown-container">
+          <label for="tags">tags</label>
+          <input id="tags" class="tags-toggle" type="checkbox" style="display:none" value="0">
+          <div class="dropdown">
+            <ul class="submenu">
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/linux">Linux</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/windows">Windows</a>
+              </li> 
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/malware">Malware</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags">View All</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <div class="search_bar_container menu-element">
+          <input type="text" placeholder="Search..." class="search_bar">
+          <div class="search-results">
+            <div class="search-results__items"></div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="search_bar_container mobile">
+      <input type="text" placeholder="Search..." class="search_bar">
+      <div class="search-results">
+        <div class="search-results__items mobile"></div>
+      </div>
+    </div>
+  </div>
+
+  
+<div class="post">
+    <h1 class="post-title">
+        FreshyCalls: Syscalls Freshly Squeezed!
+    </h1>
+    <div class="post-data">
+        
+
+<b>ElephantSe4l</b> on 2020-06-10 &nbsp;·&nbsp;
+
+<svg viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round"
+    stroke-linejoin="round" stroke-width="6.25%" preserveAspectRatio="xMaxYMax">
+    <circle cx="16" cy="16" r="14" />
+    <path d="M16 8 L16 16 20 20" />
+</svg>
+6 minutes read
+<br>
+
+<svg class="tag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"
+    stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <circle cx="24" cy="8" r="2" />
+    <path d="M2 18 L18 2 30 2 30 14 14 30 Z" />
+</svg>
+
+
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/windows/">#Windows&nbsp;</a>
+
+
+
+
+
+·&nbsp;
+
+
+<a href="https://twitter.com/intent/tweet?text=FreshyCalls%3A%20Syscalls%20Freshly%20Squeezed%21%3A%20FreshyCalls%20is%20a%20library%20that%20tries%20to%20make%20the%20use%20of%20syscalls%20comfortable%20and%20simple%2C%20without%20generating%20too%20much%20boilerplate%20and%20in%20modern%20C%2B%2B%21%0A&url=https://www.crummie5.club/freshycalls/">
+    <svg id="i-twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"
+        style="width:1.2rem;height:1.2rem">
+        <path stroke-width="0" fill="currentColor"
+            d="M60 16 L54 17 L58 12 L51 14 C42 4 28 15 32 24 C16 24 8 12 8 12 C8 12 2 21 12 28 L6 26 C6 32 10 36 17 38 L10 38 C14 46 21 46 21 46 C21 46 15 51 4 51 C37 67 57 37 54 21 Z" />
+    </svg>
+</a>
+
+<a
+    href="https://www.linkedin.com/shareArticle?mini=true&title=FreshyCalls%3A%20Syscalls%20Freshly%20Squeezed%21%3A%20FreshyCalls%20is%20a%20library%20that%20tries%20to%20make%20the%20use%20of%20syscalls%20comfortable%20and%20simple%2C%20without%20generating%20too%20much%20boilerplate%20and%20in%20modern%20C%2B%2B%21%0A&url=https://www.crummie5.club/freshycalls/">
+    <svg id="i-linkedin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+        style="width:1.3rem;height:1.3rem">
+        <rect height="11" width="4" x="3" y="9"></rect>
+        <circle cx="5" cy="5" r="2"></circle>
+        <path
+            d="M16.5,8.25A4.47251,4.47251,0,0,0,13,9.95343V9H9V20h4V13a2,2,0,0,1,4,0v7h4V12.75A4.5,4.5,0,0,0,16.5,8.25Z">
+        </path>
+    </svg>
+</a>
+
+<a href="https://telegram.me/share/?text=%0AFreshyCalls%3A%20Syscalls%20Freshly%20Squeezed%21%3A%20FreshyCalls%20is%20a%20library%20that%20tries%20to%20make%20the%20use%20of%20syscalls%20comfortable%20and%20simple%2C%20without%20generating%20too%20much%20boilerplate%20and%20in%20modern%20C%2B%2B%21&url=https://www.crummie5.club/freshycalls/">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1000"
+        width="32" height="32" style="width:1.1rem;height:1.1rem">
+        <path
+            d="M500,10C229.4,10,10,229.4,10,500s219.4,490,490,490s490-219.4,490-490S770.6,10,500,10z M740.8,345.9l-80.4,378.8c-5.5,27-21.8,33.3-44.4,20.9L493.5,655l-58.8,57.2c-6.9,6.7-12.3,12.3-24.5,12.3c-15.9,0-13.2-5.9-18.6-21.1l-41.7-137l-121.2-37.7c-26.2-8-26.4-26,5.9-38.9l472-182.2C728.2,297.9,749,312.8,740.8,345.9L740.8,345.9z" />
+    </svg>
+</a>
+
+
+    </div>
+    <div class="post-content">
+        <p>These last months I've been familiarizing myself with Windows syscalls: how they work, their offensive usage and potential detections from the blue side. Although the theory was quite interesting, I had to get my hands on it. </p>
+<p>I started with the basics: static syscalls for my version of Windows. </p>
+<p>As I'm not a pentester - I'm a programmer - I found it too uncomfortable to have to define each syscall each time. That's why I made a list with all the syscall numbers and a template that mapped each syscall with each number in a global variable. </p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+
+<p>It was something like this:</p>
+<p>syscall.asm:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">EXTERN syscall_no:DWORD</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">.code</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall PROC</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">mov </span><span style="color:#f99157;">r10</span><span style="color:#cccece;">, </span><span style="color:#f99157;">rcx</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">mov </span><span style="color:#f99157;">eax</span><span style="color:#cccece;">, </span><span style="color:#6699cc;">syscall_no</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">syscall</span><span style="color:#cccece;">
+    </span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall ENDP</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">END</span><span style="color:#cccece;">
+</span></pre>
+<p>syscall.cpp:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#c594c5;">extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">C</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#fac863;">DWORD</span><span style="color:#cccece;"> syscall_no </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;</span><span style="color:#c594c5;">
+extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">C</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#c594c5;">void</span><span style="color:#5fb3b3;">* </span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(...);</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#5fb3b3;">[...]</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#fac863;">DWORD</span><span style="color:#cccece;"> syscall_no </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> syscalls</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">find</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">NtReadVirtualMemory</span><span style="color:#5fb3b3;">&quot;);</span><span style="color:#cccece;">
+</span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">h_process</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_addr</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#6699cc;">buf</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_size</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nullptr</span><span style="color:#5fb3b3;">);</span><span style="color:#cccece;">
+</span></pre>
+<p>For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.
+Fortunatelly - and thanks to evilsocket - we found the following <a href="https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/">post</a>. In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.</p>
+<p>Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they can't be the holy grail!)</p>
+<h2 id="first-detection-the-number-extraction">First Detection: The Number Extraction<a class="zola-anchor" href="#first-detection-the-number-extraction" aria-label="Anchor link for: first-detection-the-number-extraction">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>We started reading <a href="https://www.cyberbit.com/blog/endpoint-security/malware-mitigation-when-direct-system-calls-are-used/">this Cyberbit post</a>. The post explained three different methods of numbers extraction with their pros and cons - along with their detection. </p>
+<figure>
+  <img src="https://www.crummie5.club/freshycalls//fig1.png" alt="Comparative table taken from Cyberbit&#x27;s blog." />
+  <figcaption>Comparative table taken from Cyberbit&#x27;s blog.</figcaption>
+</figure>
+<p>In our implementation we used the first method which apparently - and according to Cyberbit - was not that bad (nice!). But we still wanted to improve it. 
+We looked at the third method: reading the ntdll.dll module already loaded in the process. It seemed the best approach, but there was a warning: &quot;Fails if the functions are hooked by a security product&quot;</p>
+<p>Example:</p>
+<figure>
+  <img src="https://www.crummie5.club/freshycalls//fig2.png" alt="Cylance&#x27;s hook in ntdll.dll." />
+  <figcaption>Cylance&#x27;s hook in ntdll.dll.</figcaption>
+</figure>
+<p>If we checked NtReadVirtualMemory with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.</p>
+<p>Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number! If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! </p>
+<p>What's going on here? We are not really sure, but we think the reason might be that as the syscall number is used to calculate the offset towards the real system service, it somehow needs this relationship to work.</p>
+<ol>
+<li>We don't read ntdll from disk</li>
+<li>We don't map a second ntdll to the process</li>
+<li>We don't read the already loaded ntdll</li>
+</ol>
+<p>So... do we have superpowers now? </p>
+<p>Not really. Defenders <strong>MAY</strong> not be able to detect us at runtime, but a little of reverse engineering would spot malicious activities. Furthermore, they may not detect the extraction, but what about the execution?</p>
+<h2 id="second-detection-manual-syscall-execution">Second Detection: Manual Syscall Execution<a class="zola-anchor" href="#second-detection-manual-syscall-execution" aria-label="Anchor link for: second-detection-manual-syscall-execution">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>We already have the extraction, yet what about the execution? can this be detected? </p>
+<p>At first we didn't think sycall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.</p>
+<p>While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls <a href="https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187">here</a>. They were using something I didn't know at that time called InstrumentationCallback. 
+After a simple search I found a <a href="https://github.com/ionescu007/HookingNirvana">repo</a> and a <a href="https://www.youtube.com/watch?v=bqU0y4FzvT0">video</a> of a talk that Ionescu gave. With this thing - InstrumentationCallback - we can have a callback every time the CPU returns from kernel-mode to user-mode (i.e. when the system service called has already finished). This allowed us to know what the service output was and the return address. </p>
+<p>ScyllaHide's manual syscall detection is based of checking if the return address is within the memory range corresponding to the EXE. If it is, it's spotted as a manual syscall.</p>
+<p>What can we do about that? Let's check out what the stub of a syscall looks like. On Windows 10 you will see something like this:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#c594c5;">mov    </span><span style="color:#f99157;">r10</span><span style="color:#cccece;">, </span><span style="color:#f99157;">rcx</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">mov    </span><span style="color:#f99157;">eax</span><span style="color:#cccece;">, </span><span style="color:#f99157;">0x3f</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">test   </span><span style="color:#6699cc;">BYTE PTR </span><span style="color:#f99157;">ds</span><span style="color:#6699cc;">:</span><span style="color:#f99157;">0x7ffe0308</span><span style="color:#cccece;">, </span><span style="color:#f99157;">0x1</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">jne    </span><span style="color:#f99157;">0x15</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">syscall</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
+</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">int    </span><span style="color:#f99157;">0x2e</span><span style="color:#cccece;">
+</span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
+</span></pre>
+<p>What if we run our syscall in the original stub? We could jump to the syscall instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. </p>
+<p>Yes, we bypass that check. But we also leak which syscall has been executed. So it's up to you and your operational situation.</p>
+<h2 id="and-finally-our-library">And finally... Our library<a class="zola-anchor" href="#and-finally-our-library" aria-label="Anchor link for: and-finally-our-library">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<figure>
+  <img src="https://www.crummie5.club/freshycalls//fig3.png" alt="PoC of our library." />
+  <figcaption>PoC of our library.</figcaption>
+</figure>
+<p>Everything we've exaplained might be cool for someone, but doing it manually every time... it's not that cool. And that's why we have released this library! </p>
+<p>We tried to make the use of syscalls comfortable and simple without generating too much boilerplate. For this purpose, we have implemented a series of functions for error handling, reading memory, calling module functions... 
+Let's look at some examples of the error handling for instance:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;">freshycalls</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">caller</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#cccece;">NTSTATUS</span><span style="color:#5fb3b3;">&gt;(&quot;</span><span style="color:#99c794;">NtOpenProcessToken</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#fac863;">HANDLE</span><span style="color:#5fb3b3;">(-</span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">),</span><span style="color:#cccece;"> TOKEN_ADJUST_PRIVILEGES</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#cccece;">h_token</span><span style="color:#5fb3b3;">).</span><span style="color:#cccece;">
+      </span><span style="color:#6699cc;">throw_if_unexpected</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">NTSTATUS</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">),</span><span style="color:#cccece;">
+                          </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">[active_sedebug] Something happened opening the current process token:: 0x{{result_as_hex}}</span><span style="color:#5fb3b3;">&quot;);</span><span style="color:#cccece;">
+</span></pre><pre style="background-color:#2b2c2f;">
+<span style="color:#c594c5;">auto const</span><span style="color:#cccece;"> dos_header </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> read_mem</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#cccece;">IMAGE_DOS_HEADER</span><span style="color:#5fb3b3;">&gt;(</span><span style="color:#cccece;">h_process</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> module_addr</span><span style="color:#5fb3b3;">, sizeof(</span><span style="color:#cccece;">IMAGE_DOS_HEADER</span><span style="color:#5fb3b3;">)).</span><span style="color:#cccece;">
+      </span><span style="color:#6699cc;">throw_if_unexpected</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">NTSTATUS</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">),</span><span style="color:#cccece;">
+                          </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">[get_function_addr] Something happened reading the IMAGE_DOS_HEADER of the module at %p inside a remote process: 0x{{result_as_hex}}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;">
+                          module_addr</span><span style="color:#5fb3b3;">);</span><span style="color:#cccece;">
+</span></pre>
+<p><code>throw_if_unexpected</code> takes an expected result, an error message (or a template) and the arguments needed to format the message. For more examples you have our <a href="https://github.com/Crummie5/Freshycalls_PoC/">PoC</a> and the <a href="https://github.com/Crummie5/Freshycalls">lib code</a> itself.</p>
+<p>Be aware we have released this library &quot;for fun&quot; and it is by no means perfect. You should expect some bugs and undefined behaviours. Nonetheless if good feedback is received, we might consider continuing the development (also contributions would be really apreciated).</p>
+<p>Take care!</p>
+<p>~ ElephantSe4l </p>
+<h2 id="aknowledgements">Aknowledgements<a class="zola-anchor" href="#aknowledgements" aria-label="Anchor link for: aknowledgements">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>Thanks to:</p>
+<ul>
+<li><a href="https://twitter.com/franky_tech">@franky_tech</a>,  <a href="https://twitter.com/sniferl4bs">@sniferl4bs</a>, <a href="https://twitter.com/pieldepanceta">@pieldepanceta</a> and <a href="https://twitter.com/khsan">@khsan</a> for letting us take samples of some EDRs and AVs.</li>
+<li>All the Crummie5 for reviewing this post and covering my fool tracks.</li>
+</ul>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
