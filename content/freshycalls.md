@@ -17,8 +17,6 @@ I started with the basics: static syscalls for my version of Windows.
 
 As I'm not a pentester - I'm a programmer - I found it too uncomfortable to have to define each syscall each time. That's why I made a list with all the syscall numbers and a template that mapped each syscall with each number in a global variable. 
 
-<!-- more -->
-
 It was something like this:
 
 syscall.asm:
@@ -37,6 +35,7 @@ call_syscall ENDP
 END
 ```
 
+
 syscall.cpp:
 ```cpp
 extern "C" DWORD syscall_no = 0;
@@ -47,6 +46,8 @@ extern "C" void* call_syscall(...);
 DWORD syscall_no = syscalls.find("NtReadVirtualMemory");
 call_syscall(h_process, mem_addr, &buf, mem_size, nullptr);
 ```
+
+<!-- more -->
 
 For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.
 Fortunatelly - and thanks to evilsocket - we found the following [post](https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/). In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.
@@ -66,15 +67,15 @@ Example:
 
 {{ figure(name="fig2.png", caption="Cylance's hook in ntdll.dll.") }}
 
-If we checked NtReadVirtualMemory with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.
+If we checked `NtReadVirtualMemory` with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.
 
 Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number! If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! 
 
 What's going on here? We are not really sure, but we think the reason might be that as the syscall number is used to calculate the offset towards the real system service, it somehow needs this relationship to work.
 
-1. We don't read ntdll from disk
-2. We don't map a second ntdll to the process
-3. We don't read the already loaded ntdll
+1. We don't read ntdll.dll from disk
+2. We don't map a second ntdll.dll to the process
+3. We don't read the already loaded ntdll.dll
 
 So... do we have superpowers now? 
 
@@ -106,7 +107,7 @@ int    0x2e
 ret
 ```
 
-What if we run our syscall in the original stub? We could jump to the syscall instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. 
+What if we run our syscall in the original stub? We could jump to the `syscall` instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. 
 
 Yes, we bypass that check. But we also leak which syscall has been executed. So it's up to you and your operational situation.
 
