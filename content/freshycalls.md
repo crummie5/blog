@@ -4,7 +4,10 @@ date = 2020-06-10
 
 [taxonomies]
 tags = ["Windows"]
+
+[extra]
 authors = "ElephantSe4l"
+preview_summary = "FreshyCalls is a library that tries to make the use of syscalls comfortable and simple, without generating too much boilerplate and in modern C++!"
 preview_image = "fig1.png"
 +++
 
