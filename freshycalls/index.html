@@ -179,9 +179,9 @@ extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c7
 </span><span style="color:#6699cc;">call_syscall</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">h_process</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_addr</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#6699cc;">buf</span><span style="color:#5fb3b3;">,</span><span style="color:#6699cc;"> mem_size</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nullptr</span><span style="color:#5fb3b3;">);</span><span style="color:#cccece;">
 </span></pre><p id="zola-continue-reading"><a name="continue-reading"></a></p>
 
-<p>For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.
-Fortunatelly - and thanks to evilsocket - we found the following <a href="https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/">post</a>. In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.</p>
-<p>Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they can't be the holy grail!)</p>
+<p>For a while it worked like a charm. But as soon as we started making some tools, Windows versions knocked on the door. Honestly, having to depend on every version of Windows to extract syscall numbers was something unnacceptable... so we looked up for solutions.</p>
+<p>Fortunatelly - and thanks to evilsocket - we found the following <a href="https://www.evilsocket.net/2014/02/11/on-windows-syscall-mechanism-and-syscall-numbers-extraction-methods/">post</a>. In this way we could extract all the syscall numbers directly in runtime. It was a big improvement! Indeed, it was what we had implemented until recently.</p>
+<p>Once I had these problems solved, I wanted to study more about how to detect the use of syscalls (they couldn't be the holy grail!)</p>
 <h2 id="first-detection-the-number-extraction">First Detection: The Number Extraction<a class="zola-anchor" href="#first-detection-the-number-extraction" aria-label="Anchor link for: first-detection-the-number-extraction">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -196,15 +196,14 @@ Fortunatelly - and thanks to evilsocket - we found the following <a href="https:
   <img src="https://www.crummie5.club/freshycalls//fig1.png" alt="Comparative table taken from Cyberbit&#x27;s blog." />
   <figcaption>Comparative table taken from Cyberbit&#x27;s blog.</figcaption>
 </figure>
-<p>In our implementation we used the first method which apparently - and according to Cyberbit - was not that bad (nice!). But we still wanted to improve it. 
-We looked at the third method: reading the ntdll.dll module already loaded in the process. It seemed the best approach, but there was a warning: &quot;Fails if the functions are hooked by a security product&quot;</p>
+<p>In our implementation we used the first method which apparently - and according to Cyberbit - was not that bad (nice!). But we still wanted to improve it. We looked at the third method: reading the ntdll.dll module already loaded in the process. It seemed the best approach, but there was a warning: &quot;Fails if the functions are hooked by a security product&quot;</p>
 <p>Example:</p>
 <figure>
   <img src="https://www.crummie5.club/freshycalls//fig2.png" alt="Cylance&#x27;s hook in ntdll.dll." />
   <figcaption>Cylance&#x27;s hook in ntdll.dll.</figcaption>
 </figure>
 <p>If we checked <code>NtReadVirtualMemory</code> with Cylance installed, we would notice that our syscall number is nowhere (fuck). On the other hand, the last of the methods was supposed to be worser than the one we used, so we gave it up and continued investigating.</p>
-<p>Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number! If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! </p>
+<p>Few weeks later we noticed a really interesting relationship between the address of the stub and its corresponding syscall number. <strong>The stub with the lowest memory in Windows 10 1909 is NtAccessCheck and if we check the associated syscall number... it is 0! the lowest syscall number!</strong> If we check the second with the lowest memory - NtWorkerFactoryWorkerReady - it is 1! The second lowest syscall number! </p>
 <p>What's going on here? We are not really sure, but we think the reason might be that as the syscall number is used to calculate the offset towards the real system service, it somehow needs this relationship to work.</p>
 <ol>
 <li>We don't read ntdll.dll from disk</li>
@@ -222,10 +221,10 @@ We looked at the third method: reading the ntdll.dll module already loaded in th
     </svg>
 </a>
 </h2>
-<p>We already have the extraction, yet what about the execution? can this be detected? </p>
+<p>We already have the extraction, yet what about the execution? Could this be detected? </p>
 <p>At first we didn't think sycall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.</p>
-<p>While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls <a href="https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187">here</a>. They were using something I didn't know at that time called InstrumentationCallback. 
-After a simple search I found a <a href="https://github.com/ionescu007/HookingNirvana">repo</a> and a <a href="https://www.youtube.com/watch?v=bqU0y4FzvT0">video</a> of a talk that Ionescu gave. With this thing - InstrumentationCallback - we can have a callback every time the CPU returns from kernel-mode to user-mode (i.e. when the system service called has already finished). This allowed us to know what the service output was and the return address. </p>
+<p>While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls <a href="https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187">here</a>. They were using something I didn't know at that time called InstrumentationCallback. </p>
+<p>After a simple search I found a <a href="https://github.com/ionescu007/HookingNirvana">repo</a> and a <a href="https://www.youtube.com/watch?v=bqU0y4FzvT0">video</a> of a talk that Ionescu gave. With this thing - InstrumentationCallback - we can have a callback every time the CPU returns from kernel-mode to user-mode (i.e. when the system service called has already finished). This allowed us to know what the service output was and the return address. </p>
 <p>ScyllaHide's manual syscall detection is based of checking if the return address is within the memory range corresponding to the EXE. If it is, it's spotted as a manual syscall.</p>
 <p>What can we do about that? Let's check out what the stub of a syscall looks like. On Windows 10 you will see something like this:</p>
 <pre style="background-color:#2b2c2f;">
@@ -239,8 +238,8 @@ After a simple search I found a <a href="https://github.com/ionescu007/HookingNi
 </span><span style="color:#c594c5;">int    </span><span style="color:#f99157;">0x2e</span><span style="color:#cccece;">
 </span><span style="color:#c594c5;">ret</span><span style="color:#cccece;">
 </span></pre>
-<p>What if we run our syscall in the original stub? We could jump to the <code>syscall</code> instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check but be aware that didn't mean it was good. </p>
-<p>Yes, we bypass that check. But we also leak which syscall has been executed. So it's up to you and your operational situation.</p>
+<p>What if we run our syscall in the original stub? We could jump to the <code>syscall</code> instruction and have it follow the execution instead of returning directly to our EXE (i.e. do the ret instruction). Following this approach we could bypass that check... but be aware this doesn't mean it was good.</p>
+<p>Yes, we bypassed that check. But we also leaked which syscall was executed. So it's up to you and your operational situation using this approach or not.</p>
 <h2 id="and-finally-our-library">And finally... Our library<a class="zola-anchor" href="#and-finally-our-library" aria-label="Anchor link for: and-finally-our-library">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -254,7 +253,7 @@ After a simple search I found a <a href="https://github.com/ionescu007/HookingNi
   <img src="https://www.crummie5.club/freshycalls//fig3.png" alt="PoC of our library." />
   <figcaption>PoC of our library.</figcaption>
 </figure>
-<p>Everything we've exaplained might be cool for someone, but doing it manually every time... it's not that cool. And that's why we have released this library! </p>
+<p>Everything we've exaplained might be cool, but the fact of doing these things manually every time... it's not that cool. And that's why we have released Freshycalls!</p>
 <p>We tried to make the use of syscalls comfortable and simple without generating too much boilerplate. For this purpose, we have implemented a series of functions for error handling, reading memory, calling module functions... 
 Let's look at some examples of the error handling for instance:</p>
 <pre style="background-color:#2b2c2f;">
