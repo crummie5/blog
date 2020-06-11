@@ -147,5 +147,5 @@ Take care!
 ## Aknowledgements 
 
 Thanks to:
-- [@franky_tech](https://twitter.com/franky_tech),  [@sniferl4bs](https://twitter.com/sniferl4bs), [@pieldepanceta](https://twitter.com/pieldepanceta) and [@khsan](https://twitter.com/khsan) for letting us take samples of some EDRs and AVs.
+- [@franky_tech](https://twitter.com/franky_tech),  [@sniferl4bs](https://twitter.com/sniferl4bs), [@pieldepanceta](https://twitter.com/pieldepanceta), [@khsan](https://twitter.com/khsan) and [@KDav3s](https://twitter.com/kdav3s) for letting us take samples of some EDRs and AVs.
 - All the Crummie5 for reviewing this post and covering my fool tracks.
