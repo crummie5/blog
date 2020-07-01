@@ -24,14 +24,15 @@
   padding: 0;
   margin: 0;
   scrollbar-color: #151515 #262829;
-  ::-webkit-scrollbar-track{
-    background: #262829;
-  }
-  ::-webkit-scrollbar-thumb{
-    background: #151515;
-  }
   @include base-font-size();
   word-spacing: 0.1rem;
+}
+
+::-webkit-scrollbar-track{
+  background: #262829;
+}
+::-webkit-scrollbar-thumb{
+  background: #151515;
 }
 
 body {
