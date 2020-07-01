@@ -63,11 +63,12 @@ p {
 blockquote {
   position: relative;
   margin: 2vh 0 2vh 2px;
-  padding-left: 1rem;
+  padding: 1rem 0px 1rem 1rem;
   border-left: 0.3rem solid #d6bf0480;
   font-size: 1rem;
   line-height: 1.4rem;
-  color: #c9c8bb;
+  color: #d3d2c9;
+  background-color: #4f4b3433;
 }
 
 code {
@@ -84,7 +85,7 @@ pre {
   font-size: 0.9rem;
   max-width: 100%;
   padding: 0.6rem 0.5rem;
-  border: 0.1rem solid #535023ed;
+  border: 0.1rem solid #9d983c;
   @media (min-width: 1024px) {
     margin-left: 1rem;
   }
