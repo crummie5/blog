@@ -46,7 +46,7 @@ How could I use this approach with non-DC Systems to compromise `CAPSULE.CORP`?
 
 ## Compromising a Computer Object by its TGT
 
-The first thing we should be aware of is that computer accounts don’t have logon permissions on any system by default. This means that if you manage to obtain a TGT for the `WS04$` computer account, you should not have any explicit access to the system represented by that same account (`Web01.capsule.corp` in this case). 
+The first thing we should be aware of is that computer accounts don’t have logon permissions on any system by default. This means that if you manage to obtain a TGT for the `WS04$` computer account, you should not have any explicit access to the system represented by that same account (`WS04.capsule.corp` in this case). 
 However, as we did with the Domain Controller TGT, we can take advantage of any permissions the computer account might have. There are two “general” straight forward scenarios:
 - By default, computer accounts have privileges to configure Resource-Based Constrained Delegation (RBCD) for themselves. 
 - Computers with LAPS installed need privileges to rotate the local administrator password, which is stored in one attribute of the computer object.
