@@ -207,7 +207,7 @@ How could I use this approach with non-DC Systems to compromise <code>CAPSULE.CO
     </svg>
 </a>
 </h2>
-<p>The first thing we should be aware of is that computer accounts don’t have logon permissions on any system by default. This means that if you manage to obtain a TGT for the <code>WS04$</code> computer account, you should not have any explicit access to the system represented by that same account (<code>Web01.capsule.corp</code> in this case). 
+<p>The first thing we should be aware of is that computer accounts don’t have logon permissions on any system by default. This means that if you manage to obtain a TGT for the <code>WS04$</code> computer account, you should not have any explicit access to the system represented by that same account (<code>WS04.capsule.corp</code> in this case). 
 However, as we did with the Domain Controller TGT, we can take advantage of any permissions the computer account might have. There are two “general” straight forward scenarios:</p>
 <ul>
 <li>By default, computer accounts have privileges to configure Resource-Based Constrained Delegation (RBCD) for themselves. </li>
