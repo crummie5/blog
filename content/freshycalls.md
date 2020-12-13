@@ -123,21 +123,26 @@ We tried to make the use of syscalls comfortable and simple without generating t
 Let's look at some examples of the error handling for instance:
 
 ```cpp
-freshycalls.caller<NTSTATUS>("NtOpenProcessToken", HANDLE(-1), TOKEN_ADJUST_PRIVILEGES, &h_token).
-      throw_if_unexpected(NTSTATUS(0),
-                          "[active_sedebug] Something happened opening the current process token:: 0x{{result_as_hex}}");
+syscall.CallSyscall("NtAdjustPrivilegesToken", token_handle, false, &token_privileges, sizeof(TOKEN_PRIVILEGES), nullptr, nullptr)
+      .OrDie("[ActiveSeDebug] An error happened while activating SeDebug on current token: \"{{result_msg}}\" (Error Code: {{result_as_hex}})");
 ```
 
 ```cpp
-auto const dos_header = read_mem<IMAGE_DOS_HEADER>(h_process, module_addr, sizeof(IMAGE_DOS_HEADER)).
-      throw_if_unexpected(NTSTATUS(0),
-                          "[get_function_addr] Something happened reading the IMAGE_DOS_HEADER of the module at %p inside a remote process: 0x{{result_as_hex}}",
-                          module_addr);
+syscall.CallSyscall("NtCreateFile", &file_handle,
+                      FILE_GENERIC_WRITE,
+                      &obj,
+                      &isb,
+                      nullptr,
+                      FILE_ATTRIBUTE_NORMAL, FILE_SHARE_WRITE, FILE_OVERWRITE_IF,
+                      FILE_RANDOM_ACCESS | FILE_NON_DIRECTORY_FILE | FILE_SYNCHRONOUS_IO_NONALERT,
+                      nullptr,
+                      0)
+      .OrDie("[CreateDumpFile] An error happened while creating the dump file: \"{{result_msg}}\" (Error Code: {{result_as_hex}})");
 ```
 
-`throw_if_unexpected` takes an expected result, an error message (or a template) and the arguments needed to format the message. For more examples you have our [PoC](https://github.com/Crummie5/Freshycalls_PoC/) and the [lib code](https://github.com/Crummie5/Freshycalls) itself.
+`OrDie` checks if the result is 0, `ExpectedResultOrDie` checks if the result is equals to the given. For more examples you have our [PoC](https://github.com/Crummie5/Freshycalls_PoC/) and the [lib code](https://github.com/Crummie5/Freshycalls) itself.
 
-Be aware we have released this library "for fun" and it is by no means perfect. You should expect some bugs and undefined behaviours. Nonetheless if good feedback is received, we might consider continuing the development (also contributions would be really apreciated).
+Be aware we have released this library "for fun" and it is by no means perfect. You should expect some bugs. Nonetheless if good feedback is received, we might consider continuing the development (also contributions would be really apreciated).
 
 Take care!
 
