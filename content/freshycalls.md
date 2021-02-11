@@ -86,7 +86,7 @@ Not really. Defenders **MAY** not be able to detect us at runtime, but a little 
 
 We already have the extraction, yet what about the execution? Could this be detected? 
 
-At first we didn't think sycall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.
+At first we didn't think syscall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.
 
 While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls [here](https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187). They were using something I didn't know at that time called InstrumentationCallback. 
 

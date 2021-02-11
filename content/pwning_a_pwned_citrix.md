@@ -6,7 +6,7 @@ date = 2020-01-19
 tags = ["Linux", "Exploiting", "Malware"]
 
 [extra]
-authors = "arcocap4z"
+authors = "Acap4z"
 preview_summary = "How what looked like a Citrix CVE-2019-19781 mitigation ended up being the NOTROBIN Trojan protecting itself from being re-exploited. The journey of exploiting a race-condition to gain RCE."
 preview_image = "fig7.png"
 +++
