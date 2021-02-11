@@ -222,7 +222,7 @@ extern </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c7
 </a>
 </h2>
 <p>We already have the extraction, yet what about the execution? Could this be detected? </p>
-<p>At first we didn't think sycall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.</p>
+<p>At first we didn't think syscall executions could be registered/detected, but in fact ETW can do the job. However, we didn't find a way to detect if an execution was done MANUALLY or if it was a regular legitimate one.</p>
 <p>While researching about this topic I ended up on the ScyllaHide repo and saw that they had a function that seemed to detect manual syscalls <a href="https://github.com/x64dbg/ScyllaHide/blob/master/HookLibrary/HookedFunctions.cpp#L176-L187">here</a>. They were using something I didn't know at that time called InstrumentationCallback. </p>
 <p>After a simple search I found a <a href="https://github.com/ionescu007/HookingNirvana">repo</a> and a <a href="https://www.youtube.com/watch?v=bqU0y4FzvT0">video</a> of a talk that Ionescu gave. With this thing - InstrumentationCallback - we can have a callback every time the CPU returns from kernel-mode to user-mode (i.e. when the system service called has already finished). This allowed us to know what the service output was and the return address. </p>
 <p>ScyllaHide's manual syscall detection is based of checking if the return address is within the memory range corresponding to the EXE. If it is, it's spotted as a manual syscall.</p>

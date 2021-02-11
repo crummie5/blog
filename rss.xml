@@ -7,7 +7,18 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://www.crummie5.club/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Wed, 10 Jun 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Fri, 12 Feb 2021 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>The Lone Sharepoint</title>
+                <pubDate>Fri, 12 Feb 2021 00:00:00 +0000</pubDate>
+                <link>https://www.crummie5.club/the-lone-sharepoint/</link>
+                <guid>https://www.crummie5.club/the-lone-sharepoint/</guid>
+                <description>&lt;p&gt;Hello dear friends. Today we are going to explore some particular cases when targeting Sharepoint instances along your way in Pentests&#x2F;Red Team exercises. When I faced this suite for the first time, I noticed that there is a lot of information that can help us, but it is spread among multiple sources, so I wanted to share my own compilation combined with my research work. &lt;&#x2F;p&gt;
+&lt;p&gt;As you may know, Microsoft Sharepoint is a web-based collaborative platform that integrates with Microsoft Office. Primarily sold as a document management and storage system, the product is highly configurable and usage varies substantially among organizations. Focusing on what is of our interest, this is a web-driven suite usually accessed by authenticated corporate users and known to suffer from a myriad of CVE reported issues if not patched. These last ones lead to Remote Code Execution (RCE) and ultimately allow attackers to compromise the server instance. Sounds like a good target to compromise.&lt;&#x2F;p&gt;
+&lt;p&gt;However, the complete exploitation process is not always straightforward and we may find some difficulties when trying to escalate privileges or set up some persistence implants. We are going into detail in the following sections.&lt;&#x2F;p&gt;
+</description>
+            </item>
         
             <item>
                 <title>FreshyCalls: Syscalls Freshly Squeezed!</title>

