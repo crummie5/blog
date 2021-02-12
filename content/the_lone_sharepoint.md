@@ -55,7 +55,7 @@ There are a couple of ways to check if an asynchronous blind RCE succeeded. We c
 
 If none of these methods work we can try to write a proof file into one of the web directories and check its existence. Although default Sharepoint configurations don't allow write access to web folders, sometimes sysadmins relax these restrictions to meet application requirements, so it worths trying.
 
-A bit of research revealed that Sharepoint does not handle web files directly. However, there are some [special cases such as the `_layouts` folder where files can be requested directly](https://www.oreilly.com/library/view/professional-microsoft-sharepoint/9780470287613/9780470287613_the_special_case_of_the_underscore_layou.html). The best part of using this folder is that ASPX files are not subject to restriction as it happens with user pages, which are stored in the database and include the inability to use code blocks or include files from the file system, as already explained [here](https://www.zerodayinitiative.com/blog/2020/6/16/cve-2020-1181-sharepoint-remote-code-execution-through-web-parts).
+A bit of research revealed that Sharepoint does not handle web files directly. However, there are some [special cases such as the `_layouts` folder where files can be requested directly](https://www.oreilly.com/library/view/professional-microsoft-sharepoint/9780470287613/9780470287613_the_special_case_of_the_underscore_layou.html). The best part of using this folder is that ASPX files are not subject to restriction as it happens with user pages, which are stored in the database and include the inability to use code blocks or include files from the file system, as already explained in [CVE-2020-1181](https://www.zerodayinitiative.com/blog/2020/6/16/cve-2020-1181-sharepoint-remote-code-execution-through-web-parts).
 
 From now on, all practical explanations will be based in the testing Sharepoint 2016 VM available [here](https://gauravmahajan.net/2017/10/06/sharepoint-server-2016-virtual-machine-download/). We will try to upload some testing code to check if we can write into the `_layouts` folder with the current IIS Pool user.
 
@@ -108,7 +108,7 @@ c:\windows\system32\inetsrv\appcmd.exe list apppool  /text:* | findstr "userName
 
 Remember that this command must be launched using the PrintSpoofer tool, and wrap the entire command in Ysoserial to trigger it through serialization as explained earlier. Output will be written into the `layouts` folder as a fake JS file named `share.js`. If everything went as expected, all the service accounts configured in IIS should be displayed when opening the dump file (remember to delete the file ASAP, and don't even try this in a customer's environment without encrypting these contents first).
 
-{{ figure(name="fig4.png", caption="Username and password extraction") }}
+{{ figure(name="fig4.png", caption="Username and p4ssword extraction.") }}
 
 At this point we should have both command execution and privilege escalation in place. If we didn't get a C2 implant with proxy capabilities working, we need to proceed with the Web Tunneling step.
 
@@ -139,7 +139,7 @@ However, there are two problems we are going to face if we try to use ReGeorg/Ne
 
 ## NTLM Authentication
 
-The first problem we are facing is web NTLM Authentication. Although there is a flag to add headers which can be used to set a fixed `Authorization` header, in the case of NTLM this is not enough as it changes dinamically with its challenge-response model.
+The first problem we are facing is web NTLM Authentication. Although there is a flag to add headers which can be used to set a fixed `Authorization` header, in the case of NTLM this is not enough as it changes dynamically with its challenge-response model.
 
 ```bash
  $ python3 neoreg.py -k sup3rs3cr3tp4ss -u http://intranet.sp2016gm.dev/_layouts/15/tunnel.aspx
@@ -160,7 +160,7 @@ In the Python client file `neoreg.py` we can use hardcoded credentials as a firs
 
 ```python
 ...
-17.			from requests_ntlm2 import HttpNtlmAuth
+17.         from requests_ntlm2 import HttpNtlmAuth
 ...
 717.        conn.headers['Accept-Encoding'] = 'gzip, deflate'
 718.        conn.headers['User-Agent'] = USERAGENT
@@ -171,25 +171,25 @@ In the Python client file `neoreg.py` we can use hardcoded credentials as a firs
 If for some reason the cleartext password is not known but we have the NTLM hash, it can be used directly.  It is not a well documented function, but digging around into the code shows that Pass the Hash is already implemented in this library. GitHub itself is a nice tool to trace code as it is capable of matching function definitions between files.
 
 We start by looking at `requests_ntlm2.py` file until the first reference to header negotiation appears.
-{{ figure(name="fig5.png", caption="") }}
+{{ figure(name="fig5.png", caption="Reference in requests_ntlm2.py.") }}
 
 Next file to be inspected is `dance.py` inside the same project. The `HttpNtlmContext` class is wrapping its namesake in the `ntlm_auth` project, which is the base of this one.
-{{ figure(name="fig6.png", caption="") }}
+{{ figure(name="fig6.png", caption="Reference in dance.py.") }}
 
 We move to `ntlm.py` file in the original `ntlm_auth` project referred in `HttpNtlmContext` until we see the next reference to the challenge authentication message, pointing to `ntlm_auth/messages.py`.
-{{ figure(name="fig7.png", caption="") }}
+{{ figure(name="fig7.png", caption="Reference in ntlm_auth/messages.py.") }}
 
 We reach the point where username and password is being computed, but we need to dive in deeper detail that we can get from `ntlm_auth/compute_response.py`.
-{{ figure(name="fig8.png", caption="") }}
+{{ figure(name="fig8.png", caption="Reference in ntlm_auth/compute_response.py.") }}
 
 The `compute_response.py` file has another reference to the `_ntowfv2` function in `ntlm_auth/compute_hash.py`.
-{{ figure(name="fig9.png", caption="") }}
+{{ figure(name="fig9.png", caption="Reference in ntlm_auth/compute_response.py.") }}
 
 Finally we reach the low-level detail at `compute_hash.py`, and here is where the magic happens. If the `password` string matches a full NTLM hash, no transformation is applied and the library just split LM and NT hashes to take the lattest.
-{{ figure(name="fig10.png", caption="") }}
+{{ figure(name="fig10.png", caption="Reference in ntlm_auth/compute_hash.py.") }}
 
 This operation takes place in the `_ntowfv1` function, but if we take a look to `_ntowfv2` which is the one we came from, we can see that it follows the same path since it calls `_ntowfv1` to get the digest.
-{{ figure(name="fig11.png", caption="") }}
+{{ figure(name="fig11.png", caption="The function _ntowfv2 points to _ntowfv1.") }}
 
 
 You can test it by putting the NTLM hash instead of the plaintext password in the authentication line.
