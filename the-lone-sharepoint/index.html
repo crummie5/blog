@@ -361,7 +361,7 @@
 <pre style="background-color:#2b2c2f;">
 <span style="color:#f99157;">720</span><span style="color:#5fb3b3;">.     </span><span style="color:#cccece;">auth</span><span style="color:#5fb3b3;">=</span><span style="color:#6699cc;">HttpNtlmAuth</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">gmsp2016.dev</span><span style="color:#5fb3b3;">\\</span><span style="color:#99c794;">sp_services</span><span style="color:#5fb3b3;">&#39;,&#39;</span><span style="color:#99c794;">908E2A7188837309B262350F152C6028:BA03A114DEF8D5C913983436960E592C</span><span style="color:#5fb3b3;">&#39;)
 </span></pre>
-<p>This point is quite useful if you get NTLM hashes from SAM / LSASS dumps or the <a href="https://github.com/eladshamir/Internal-Monologue">Internal Monologue Attack</a>.</p>
+<p>This point is quite useful if you get NTLM hashes from SAM / LSASS dumps or the <a href="https://github.com/eladshamir/Internal-Monologue">Internal Monologue Attack</a>. Note that in the last case, the NetNTLMv1 hash must be cracked into NTLM first.</p>
 <h3 id="dealing-with-session-state">Dealing with Session State<a class="zola-anchor" href="#dealing-with-session-state" aria-label="Anchor link for: dealing-with-session-state">
     <svg id="i-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none"
         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
