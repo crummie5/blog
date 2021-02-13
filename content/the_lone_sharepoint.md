@@ -198,7 +198,7 @@ You can test it by putting the NTLM hash instead of the plaintext password in th
 720.     auth=HttpNtlmAuth('gmsp2016.dev\\sp_services','908E2A7188837309B262350F152C6028:BA03A114DEF8D5C913983436960E592C')
 ```
 
-This point is quite useful if you get NTLM hashes from SAM / LSASS dumps or the [Internal Monologue Attack](https://github.com/eladshamir/Internal-Monologue).
+This point is quite useful if you get NTLM hashes from SAM / LSASS dumps or the [Internal Monologue Attack](https://github.com/eladshamir/Internal-Monologue). Note that in the last case, the NetNTLMv1 hash must be cracked into NTLM first.
 
 
 ### Dealing with Session State
